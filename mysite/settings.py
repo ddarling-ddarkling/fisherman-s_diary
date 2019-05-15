@@ -25,7 +25,7 @@ SECRET_KEY = '*7ax%9c+y5_ha2=wtxuzk_8*5&vdxy--gham0)m+srerw91dva'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'zena959.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'xena.pythonanywhere.com']
 
 
 # Application definition
