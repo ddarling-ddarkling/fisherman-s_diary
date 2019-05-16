@@ -6,4 +6,4 @@ class DiaryForm(forms.ModelForm):
 
     class Meta:
         model = Diary
-        fields = ('name', 'description',)
+        fields = ('name', 'catch_date', 'description', 'feeding_type')

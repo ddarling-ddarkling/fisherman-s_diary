@@ -3,15 +3,15 @@ from django.db import models
 from django.utils import timezone
 
 class Diary(models.Model):
+    name = models.CharField(max_length=50)
     published_date = models.DateField(blank=True, null=True)
     catch_date = models.DateField(blank=True, null=True)
-    name = models.CharField(max_length=50)
     description = models.TextField()
-    #fishing_time = models.TimeField()
-    #feeding_type = models.CharField(max_length=50)
+    feeding_type = models.CharField(max_length=30, blank=True, null=True)
     #catch_type = models.CharField(max_length=50)
     #tackle_type = models.CharField(max_length=50)
     #weather = models.CharField(max_length=50)
+    #fishing_time = models.TimeField()
     #deleted = models.BooleanField() #??
 
     def publish(self):

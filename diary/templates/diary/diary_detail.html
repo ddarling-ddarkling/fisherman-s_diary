@@ -12,6 +12,8 @@
             <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
         <h1>{{ diary.name }}</h1>
+        <p>{{ diary.catch_date}}</p>
         <p>{{ diary.description|linebreaksbr }}</p>
+        <p>{{ diary.feeding_type}}</p>
     </div>
 {% endblock %}
