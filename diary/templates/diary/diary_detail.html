@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'diary/base.html' %}
 
 {% block content %}
     <div class="post">
@@ -6,6 +6,10 @@
             <div class="date">
                 {{ diary.published_date }}
             </div>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <a class="btn btn-default" href="{% url 'diary_edit' pk=diary.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
         <h1>{{ diary.name }}</h1>
         <p>{{ diary.description|linebreaksbr }}</p>
