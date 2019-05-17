@@ -1,11 +1,11 @@
-{% extends 'diary/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 
     {% for diary in diaries %}
         <div class="post">
             <div class="date">
-                <p>Опубликовано: {{ diary.published_date }}</p>
+                <p>Автор: {{ diary.author }} Опубликовано: {{ diary.published_date }}</p>
             </div>
             <h1><a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a></h1>
             <p>{{ diary.description|linebreaksbr }}</p>

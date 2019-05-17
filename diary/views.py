@@ -6,7 +6,7 @@ from .forms import DiaryForm
 
 
 def diary_page(request):
-    diaries = Diary.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    diaries = Diary.objects.filter(deleted__lte=False).filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'diary/diary_page.html', {'diaries': diaries})
 
 
@@ -21,6 +21,7 @@ def diary_new(request):
         if form.is_valid():
             diary = form.save(commit=False)
             diary.published_date = timezone.now()
+            diary.author = request.user
             diary.save()
             return redirect('diary_detail', pk=diary.pk)
     else:
@@ -44,5 +45,7 @@ def diary_edit(request, pk):
 
 def diary_remove(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
-    diary.delete()
+    if diary.author == request.user:
+        diary.deleted = True
+        diary.save()
     return redirect('diary_page')

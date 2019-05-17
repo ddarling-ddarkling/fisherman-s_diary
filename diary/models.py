@@ -3,16 +3,30 @@ from django.db import models
 from django.utils import timezone
 
 class Diary(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=50)
     published_date = models.DateField(blank=True, null=True)
     catch_date = models.DateField(blank=True, null=True)
     description = models.TextField()
     feeding_type = models.CharField(max_length=30, blank=True, null=True)
-    #catch_type = models.CharField(max_length=50)
-    #tackle_type = models.CharField(max_length=50)
-    #weather = models.CharField(max_length=50)
-    #fishing_time = models.TimeField()
-    #deleted = models.BooleanField() #??
+    catch_type = models.CharField(max_length=50, blank=True, null=True)
+    tackle_type = models.CharField(max_length=50, blank=True, null=True)
+    FISHING_TIME_CHOICES = [
+        ('morning', 'утро'),
+        ('afternoon', 'день'),
+        ('evening', 'вечер'),
+        ('night', 'ночь'),
+    ]
+    fishing_time = models.CharField(max_length=12, choices=FISHING_TIME_CHOICES, default='morning')
+    WEATHER_CHOICES = [
+        ('sun', 'ясно'),
+        ('cloud', 'облачно'),
+        ('thundercloud', 'пасмурно'),
+        ('rain', 'небольшой дождь'),
+        ('rainstorm', 'сильный дождь'),
+    ]
+    weather = models.CharField(max_length=12, choices=WEATHER_CHOICES, default='sun')
+    deleted = models.BooleanField(blank=True, default=False)
 
     def publish(self):
         self.published_date = timezone.now()

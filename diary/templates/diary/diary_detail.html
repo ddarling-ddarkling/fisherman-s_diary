@@ -1,19 +1,26 @@
-{% extends 'diary/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
     <div class="post">
         {% if diary.published_date %}
             <div class="date">
-                {{ diary.published_date }}
+                {{ diary.published_date }} {{ diary.author }}
             </div>
         {% endif %}
         {% if user.is_authenticated %}
             <a class="btn btn-default" href="{% url 'diary_edit' pk=diary.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+            {% if user == diary.author %}
+                <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+            {% endif %}
         {% endif %}
         <h1>{{ diary.name }}</h1>
-        <p>{{ diary.catch_date}}</p>
+        <p><b>Дата рыбалки:</b> {{ diary.catch_date}}</p>
+        <p><b>Время суток:</b> {{ diary.get_fishing_time_display }}</p>
+        <p><b>Погода:</b> {{ diary.get_weather_display }}</p>
         <p>{{ diary.description|linebreaksbr }}</p>
-        <p>{{ diary.feeding_type}}</p>
+        <p><b>Тип прикорма:</b> {{ diary.feeding_type}}</p>
+        <p><b>Тип снасти:</b> {{ diary.tackle_type}}</p>
+        <p><b>Улов:</b> {{ diary.catch_type}}</p>
+        <p>{{ diary.deleted}}</p>
     </div>
 {% endblock %}
