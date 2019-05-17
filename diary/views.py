@@ -31,15 +31,16 @@ def diary_new(request):
 
 def diary_edit(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
-    if request.method == "POST":
-        form = DiaryForm(request.POST, instance=diary)
-        if form.is_valid():
-            diary = form.save(commit=False)
-            diary.published_date = timezone.now()
-            diary.save()
-            return redirect('diary_detail', pk=diary.pk)
-    else:
-        form = DiaryForm(instance=diary)
+    if diary.author == request.user:
+        if request.method == "POST":
+            form = DiaryForm(request.POST, instance=diary)
+            if form.is_valid():
+                diary = form.save(commit=False)
+                diary.published_date = timezone.now()
+                diary.save()
+                return redirect('diary_detail', pk=diary.pk)
+        else:
+            form = DiaryForm(instance=diary)
     return render(request, 'diary/diary_edit.html', {'form': form})
 
 
