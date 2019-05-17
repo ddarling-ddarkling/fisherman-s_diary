@@ -7,11 +7,9 @@
                 {{ diary.published_date }} {{ diary.author }}
             </div>
         {% endif %}
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user == diary.author %}
             <a class="btn btn-default" href="{% url 'diary_edit' pk=diary.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            {% if user == diary.author %}
-                <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-            {% endif %}
+            <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
         <h1>{{ diary.name }}</h1>
         <p><b>Дата рыбалки:</b> {{ diary.catch_date}}</p>
