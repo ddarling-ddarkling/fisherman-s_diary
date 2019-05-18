@@ -4,7 +4,8 @@
     <div class="post">
         {% if diary.published_date %}
             <div class="date">
-                {{ diary.published_date }} {{ diary.author }}
+                <p>Автор: <a href="{% url 'profile' pk=diary.author.pk %}"> {{ diary.author }}</a>
+                    {{ diary.published_date }}</p>
             </div>
         {% endif %}
         {% if user.is_authenticated and user == diary.author %}

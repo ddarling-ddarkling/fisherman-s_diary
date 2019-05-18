@@ -6,12 +6,19 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="{% static 'css/diary.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+        {% block scripts %}
+        {% endblock %}
     </head>
     <body>
         <div class="page-header">
             {% if user.is_authenticated %}
                 <a href="{% url 'diary_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-                <p>{{ user.username }}</p>
+                <p><a href="{% url 'profile' pk=user.pk %}"> {{ user.username }}</a></p>
+                {% if user.is_staff %}
+                    <a href="{% url 'admin:index' %}">Админка</a>
+                {% endif %}
                 <p><a href="{% url 'logout' %}">Выход</a></p>
             {% else %}
                 <a href="{% url 'login' %}">Вход</a>

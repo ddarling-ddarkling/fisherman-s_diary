@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="post">
+        <h1>Профиль пользователя <b>{{ profile_user.username }}</b></h1>
+        {% if profile.region != null %}
+            <p><b>Регион:</b> {{ profile.region}}</p>
+        {% endif %}
+        {% if profile.bio != null %}
+            <p><b>О себе:</b> {{ profile.bio}}</p>
+        {% endif %}
+        {% if profile.birthday != null %}
+            <p><b>День рождения:</b> {{ profile.birthday}}</p>
+        {% endif %}
+        {% if user.is_authenticated and user == profile.user %}
+            <a class="btn btn-default" href="{% url 'profile_edit' pk=user.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+        {% endif %}
+    </div>
+{% endblock %}

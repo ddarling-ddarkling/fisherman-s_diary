@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block scripts %}
+     <script>
+      $(function() {
+        $( ".datepicker" ).datepicker({
+          changeMonth: true,
+          changeYear: true,
+          yearRange: "1920:2019",
+          dateFormat: "dd.mm.yy",
+        });
+      });
+      </script>
+{% endblock %}
+{% block content %}
+    <h1>Редактирование профиля пользователя <b>{{ user.username }}</b></h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Сохранить</button>
+    </form>
+{% endblock %}
