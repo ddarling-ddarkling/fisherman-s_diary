@@ -20,8 +20,29 @@
         <p><b>Время суток:</b> {{ diary.get_fishing_time_display }}</p>
         <p><b>Погода:</b> {{ diary.get_weather_display }}</p>
         <p>{{ diary.description|linebreaksbr }}</p>
-        <p><b>Тип прикорма:</b> {{ diary.feeding_type}}</p>
-        <p><b>Тип снасти:</b> {{ diary.tackle_type}}</p>
-        <p><b>Улов:</b> {{ diary.catch_type}}</p>
+        {% if diary.feeding_type %}
+            <p><b>Тип прикорма:</b> {{ diary.feeding_type}}</p>
+        {% endif %}
+        {% if profile.tackle_type %}
+            <p><b>Тип снасти:</b> {{ diary.tackle_type}}</p>
+        {% endif %}
+        {% if profile.catch_type %}
+            <p><b>Улов:</b> {{ diary.catch_type}}</p>
+        {% endif %}
     </div>
+    <h1>Комментарии:</h1>
+    {% for comment in comments %}
+        <br>
+        <div>
+            <a href="{% url 'profile' pk=comment.author.pk %}">{{ comment.author }}</a>
+            <p>{{ comment.description }}</p>
+            {{ comment.published_date }}<hr>
+        </div>
+    {% endfor %}
+    {% if form %}
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Сохранить</button>
+        </form>
+    {% endif %}
 {% endblock %}

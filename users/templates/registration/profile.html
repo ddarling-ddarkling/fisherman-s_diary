@@ -3,13 +3,13 @@
 {% block content %}
     <div class="post">
         <h1>Профиль пользователя <b>{{ profile_user.username }}</b></h1>
-        {% if profile.region != null %}
+        {% if profile.region %}
             <p><b>Регион:</b> {{ profile.region}}</p>
         {% endif %}
-        {% if profile.bio != null %}
+        {% if profile.bio %}
             <p><b>О себе:</b> {{ profile.bio}}</p>
         {% endif %}
-        {% if profile.birthday != null %}
+        {% if profile.birthday %}
             <p><b>День рождения:</b> {{ profile.birthday}}</p>
         {% endif %}
         {% if user.is_authenticated and user == profile.user %}

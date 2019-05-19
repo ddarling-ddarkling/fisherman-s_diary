@@ -1,5 +1,6 @@
 from django import forms
 from .models import Diary
+from .models import Comment
 
 
 class DiaryForm(forms.ModelForm):
@@ -25,4 +26,16 @@ class DiaryForm(forms.ModelForm):
             'feeding_type': 'Тип прикорма:',
             'tackle_type': 'Тип снасти:',
             'catch_type': 'Тип улова:',
+        }
+
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = {
+            'description',
+        }
+        labels = {
+            'description': 'Текст комментария:',
         }
