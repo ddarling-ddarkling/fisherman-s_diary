@@ -12,6 +12,9 @@
             <a class="btn btn-default" href="{% url 'diary_edit' pk=diary.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
             <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
+        {% if user.is_staff and user != diary.author %}
+            <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+        {% endif %}
         <h1>{{ diary.name }}</h1>
         <p><b>Дата рыбалки:</b> {{ diary.catch_date}}</p>
         <p><b>Время суток:</b> {{ diary.get_fishing_time_display }}</p>

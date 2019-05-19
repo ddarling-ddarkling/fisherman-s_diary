@@ -34,13 +34,17 @@ def profile(request, pk):
 
 
 def profile_edit(request, pk):
-    user_profile = get_object_or_404(Profile, pk=pk)
-    if request.method == "POST" and user_profile.user == request.user:
+    user = get_object_or_404(User, pk=pk)
+    user_profile = get_object_or_404(Profile, user=user)
+    if user != request.user:
+        return redirect('profile', pk=user.pk)
+
+    if request.method == "POST":
         form = ProfileForm(request.POST, instance=user_profile)
         if form.is_valid():
-            profile_user = form.save(commit=False)
-            profile_user.save()
-            return redirect('profile', pk=profile_user.pk)
+            user_profile = form.save(commit=False)
+            user_profile.save()
+            return redirect('profile', pk=user.pk)
     else:
         form = ProfileForm(instance=user_profile)
     return render(request, 'registration/profile_edit.html', {'form': form})

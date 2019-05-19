@@ -31,7 +31,10 @@ def diary_new(request):
 
 def diary_edit(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
-    if request.method == "POST" and diary.author == request.user:
+    if diary.author != request.user:
+        return redirect('diary_detail', pk=diary.pk)
+
+    if request.method == "POST":
         form = DiaryForm(request.POST, instance=diary)
         if form.is_valid():
             diary = form.save(commit=False)
@@ -45,7 +48,7 @@ def diary_edit(request, pk):
 
 def diary_remove(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
-    if diary.author == request.user:
+    if diary.author == request.user or request.user.is_staff:
         diary.deleted = True
         diary.save()
     return redirect('diary_page')

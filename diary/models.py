@@ -34,3 +34,15 @@ class Diary(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    diary_id = models.ForeignKey(Diary, on_delete=models.CASCADE)
+    description = models.TextField()
+    published_date = models.DateField(blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+
