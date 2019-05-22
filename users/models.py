@@ -11,3 +11,8 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Relationship(models.Model):
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followers")
+    following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followings")

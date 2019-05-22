@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
 from users.forms import ProfileForm
-from users.models import Profile
+from users.models import Profile, Relationship
 
 
 def signup(request):
@@ -25,12 +25,13 @@ def signup(request):
 
 def profile(request, pk):
     profile_user = get_object_or_404(User, pk=pk)
+    relationships = Relationship.objects.filter(following=profile_user)
     if profile_user:
         user_profile, created = Profile.objects.get_or_create(user=profile_user)
     else:
         return HttpResponse("Авторизуйтесь")
     print(user_profile)
-    return render(request, 'registration/profile.html', {'profile': user_profile, 'profile_user': profile_user})
+    return render(request, 'registration/profile.html', {'profile': user_profile, 'profile_user': profile_user, 'relationships': relationships})
 
 
 def profile_edit(request, pk):
@@ -48,3 +49,4 @@ def profile_edit(request, pk):
     else:
         form = ProfileForm(instance=user_profile)
     return render(request, 'registration/profile_edit.html', {'form': form})
+

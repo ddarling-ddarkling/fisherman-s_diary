@@ -16,4 +16,10 @@
             <a class="btn btn-default" href="{% url 'profile_edit' pk=user.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
         {% endif %}
     </div>
+    <div>
+        {% for relationship in relationships %}
+            <h1>Подписчики: </h1>
+            <p>{{ relationship.follower }}</p>
+        {% endfor %}
+    </div>
 {% endblock %}
