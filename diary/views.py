@@ -28,6 +28,7 @@ def diary_detail(request, pk):
 
 
 def diary_new(request):
+    header = "Новая запись"
     if request.method == "POST":
         form = DiaryForm(request.POST)
         if form.is_valid():
@@ -38,10 +39,11 @@ def diary_new(request):
             return redirect('diary_detail', pk=diary.pk)
     else:
         form = DiaryForm()
-    return render(request, 'diary/diary_edit.html', {'form': form})
+    return render(request, 'diary/diary_edit.html', {'form': form, 'header': header})
 
 
 def diary_edit(request, pk):
+    header = "Редактировать запись"
     diary = get_object_or_404(Diary, pk=pk)
     if diary.author != request.user:
         return redirect('diary_detail', pk=diary.pk)
@@ -55,7 +57,7 @@ def diary_edit(request, pk):
             return redirect('diary_detail', pk=diary.pk)
     else:
         form = DiaryForm(instance=diary)
-    return render(request, 'diary/diary_edit.html', {'form': form})
+    return render(request, 'diary/diary_edit.html', {'form': form, 'header': header})
 
 
 def diary_remove(request, pk):
