@@ -25,13 +25,17 @@ def signup(request):
 
 def profile(request, pk):
     profile_user = get_object_or_404(User, pk=pk)
-    relationships = Relationship.objects.filter(following=profile_user)
+    follower_relationships = Relationship.objects.filter(following=profile_user)
+    following_relationships = Relationship.objects.filter(follower=profile_user)
     if profile_user:
         user_profile, created = Profile.objects.get_or_create(user=profile_user)
     else:
         return HttpResponse("Авторизуйтесь")
     print(user_profile)
-    return render(request, 'registration/profile.html', {'profile': user_profile, 'profile_user': profile_user, 'relationships': relationships})
+    return render(request, 'registration/profile.html', {'profile': user_profile,
+                                                         'profile_user': profile_user,
+                                                         'follower_relationships': follower_relationships,
+                                                         'following_relationships': following_relationships})
 
 
 def profile_edit(request, pk):

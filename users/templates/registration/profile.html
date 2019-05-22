@@ -18,8 +18,22 @@
     </div>
     <div>
         <h1>Подписчики: </h1>
-        {% for relationship in relationships %}
-            <p>{{ relationship.follower }}</p>
-        {% endfor %}
+        {% if follower_relationships %}
+            {% for relationship in follower_relationships %}
+                <p><a href="{% url 'profile' pk=relationship.follower.pk %}">{{ relationship.follower }}</a></p>
+            {% endfor %}
+        {% else %}
+            <p>У вас пока нет подписчиков</p>
+        {% endif %}
+    </div>
+    <div>
+        <h1>Подписки: </h1>
+        {% if following_relationships %}
+            {% for relationship in following_relationships %}
+                <p><a href="{% url 'profile' pk=relationship.following.pk %}">{{ relationship.following }}</a></p>
+            {% endfor %}
+        {% else %}
+            <p>У вас пока нет подписок</p>
+        {% endif %}
     </div>
 {% endblock %}
