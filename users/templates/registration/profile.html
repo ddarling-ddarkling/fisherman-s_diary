@@ -54,7 +54,7 @@
     <h1>Посты пользователя: </h1>
     {% for diary in diary_list %}
         <div>
-            {{ deleted_flag }}<a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a> {{ diary.published_date }}
+            <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a> {{ diary.published_date }}
         </div>
     {% endfor %}
 {% endblock %}
