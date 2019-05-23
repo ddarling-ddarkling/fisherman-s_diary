@@ -31,11 +31,21 @@ def profile(request, pk):
         user_profile, created = Profile.objects.get_or_create(user=profile_user)
     else:
         return HttpResponse("Авторизуйтесь")
+
     print(user_profile)
+    follow_sign = False
+    if request.user.is_authenticated:
+        relationship = Relationship.objects.filter(following=profile_user, follower=request.user)
+        if relationship:
+            follow_sign = True
+        else:
+            follow_sign = False
+
     return render(request, 'registration/profile.html', {'profile': user_profile,
                                                          'profile_user': profile_user,
                                                          'follower_relationships': follower_relationships,
-                                                         'following_relationships': following_relationships})
+                                                         'following_relationships': following_relationships,
+                                                         'follow_sign': follow_sign})
 
 
 def profile_edit(request, pk):
@@ -54,3 +64,19 @@ def profile_edit(request, pk):
         form = ProfileForm(instance=user_profile)
     return render(request, 'registration/profile_edit.html', {'form': form})
 
+
+def subscribe(request, pk):
+    following_user = get_object_or_404(User, pk=pk)
+    if request.user:
+        relationship, created = Relationship.objects.get_or_create(following=following_user, follower=request.user)
+
+    return redirect('profile', pk=following_user.pk)
+
+
+def unsubscribe(request, pk):
+    following_user = get_object_or_404(User, pk=pk)
+    relationship = get_object_or_404(Relationship, following=following_user, follower=request.user)
+    if request.user:
+        relationship.delete()
+
+    return redirect('profile', pk=following_user.pk)
