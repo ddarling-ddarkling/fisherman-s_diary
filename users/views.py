@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
+from diary.models import Diary, Comment
 from users.forms import ProfileForm
 from users.models import Profile, Relationship
 
@@ -41,11 +42,18 @@ def profile(request, pk):
         else:
             follow_sign = False
 
+    if profile_user == request.user:
+        diary_list = Diary.objects.filter(author=profile_user).order_by('-published_date')
+    else:
+        diary_list = Diary.objects.filter(author=profile_user, deleted=False).order_by('-published_date')
+    # comments_amount = Comment.objects.filter(diary_id=diary_list.pk).count()
+
     return render(request, 'registration/profile.html', {'profile': user_profile,
                                                          'profile_user': profile_user,
                                                          'follower_relationships': follower_relationships,
                                                          'following_relationships': following_relationships,
-                                                         'follow_sign': follow_sign})
+                                                         'follow_sign': follow_sign,
+                                                         'diary_list': diary_list})
 
 
 def profile_edit(request, pk):
