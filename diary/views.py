@@ -7,7 +7,15 @@ from .forms import DiaryForm, CommentForm
 
 
 def diary_page(request):
-    diaries = Diary.objects.filter(deleted__lte=False).filter(published_date__lte=timezone.now()).order_by('published_date')
+    diary_list = Diary.objects.filter(deleted__lte=False).filter(published_date__lte=timezone.now()).order_by('-published_date')
+    paginator = Paginator(diary_list, 4)
+    page = request.GET.get('page')
+    try:
+        diaries = paginator.page(page)
+    except PageNotAnInteger:
+        diaries = paginator.page(1)
+    except EmptyPage:
+        diaries = paginator.page(paginator.num_pages)
     return render(request, 'diary/diary_page.html', {'diaries': diaries})
 
 

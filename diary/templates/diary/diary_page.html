@@ -9,8 +9,22 @@
                     Опубликовано: {{ diary.published_date }}</p>
             </div>
             <h1><a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a></h1>
-            <p>{{ diary.description|linebreaksbr }}</p>
+            <p>{{ diary.description|linebreaksbr|truncatewords:80 }}</p>
         </div>
     {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if diaries.has_previous %}
+                <a href="?page={{ diaries.previous_page_number }}">предыдущая</a>
+            {% endif %}
 
+            <span class="current">
+                Страница {{ diaries.number }} из {{ diaries.paginator.num_pages }}
+            </span>
+
+            {% if diaries.has_next %}
+                <a href="?page={{ diaries.next_page_number }}">Следующая</a>
+            {% endif %}
+        </span>
+    </div>
 {% endblock %}
