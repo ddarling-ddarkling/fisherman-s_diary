@@ -20,7 +20,9 @@
             <a class="btn btn-default" href="{% url 'restore' pk=diary.pk %}">Восстановить</a>
         {% endif %}
         <h1>{{ diary.name }}</h1>
-        <p><b>Дата рыбалки:</b> {{ diary.catch_date}}</p>
+        {% if diary.catch_date %}
+            <p><b>Дата рыбалки:</b> {{ diary.catch_date}}</p>
+        {% endif %}
         <p><b>Время суток:</b> {{ diary.get_fishing_time_display }}</p>
         <p><b>Погода:</b> {{ diary.get_weather_display }}</p>
         <p>{{ diary.description|linebreaksbr }}</p>
