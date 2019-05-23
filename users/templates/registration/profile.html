@@ -51,10 +51,11 @@
             {% endif %}
         {% endif %}
     </div>
-    <h1>Посты пользователя: </h1>
+    <h1>{{ header }}</h1>
     {% for diary in diary_list %}
         <div>
-            <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a> {{ diary.published_date }}
+            <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a>&nbsp{{ diary.published_date }}&nbsp{{ diary.comments_amount }}
+            &nbsp<b>{% if diary.deleted == True %} Удалён {% endif %}</b>
         </div>
     {% endfor %}
 {% endblock %}

@@ -10,6 +10,7 @@
             </div>
             <h1><a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a></h1>
             <p>{{ diary.description|linebreaksbr|truncatewords:80 }}</p>
+            <p>Комментариев: {{ diary.comments_amount }}</p>
         </div>
     {% endfor %}
     <div class="pagination">

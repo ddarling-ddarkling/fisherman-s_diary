@@ -44,16 +44,18 @@ def profile(request, pk):
 
     if profile_user == request.user:
         diary_list = Diary.objects.filter(author=profile_user).order_by('-published_date')
+        header = "Мои посты:"
     else:
         diary_list = Diary.objects.filter(author=profile_user, deleted=False).order_by('-published_date')
-    # comments_amount = Comment.objects.filter(diary_id=diary_list.pk).count()
+        header = "Посты пользователя:"
 
     return render(request, 'registration/profile.html', {'profile': user_profile,
                                                          'profile_user': profile_user,
                                                          'follower_relationships': follower_relationships,
                                                          'following_relationships': following_relationships,
                                                          'follow_sign': follow_sign,
-                                                         'diary_list': diary_list})
+                                                         'diary_list': diary_list,
+                                                         'header': header})
 
 
 def profile_edit(request, pk):

@@ -21,7 +21,7 @@ def diary_page(request):
 
 def diary_detail(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
-    comments = Comment.objects.filter(diary_id=diary.pk)
+    comment_list = Comment.objects.filter(diary_id=diary.pk).order_by('-published_date')
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -33,6 +33,15 @@ def diary_detail(request, pk):
             return redirect('diary_detail', pk=diary.pk)
     else:
         form = CommentForm()
+
+    paginator = Paginator(comment_list, 4)
+    page = request.GET.get('page')
+    try:
+        comments = paginator.page(page)
+    except PageNotAnInteger:
+        comments = paginator.page(1)
+    except EmptyPage:
+        comments = paginator.page(paginator.num_pages)
     return render(request, 'diary/diary_detail.html', {'diary': diary, 'comments': comments, 'form': form})
 
 
@@ -75,3 +84,20 @@ def diary_remove(request, pk):
         diary.deleted = True
         diary.save()
     return redirect('diary_page')
+
+
+def restore(request, pk):
+    diary = get_object_or_404(Diary, pk=pk)
+    if diary.author == request.user or request.user.is_staff:
+        diary.deleted = False
+        diary.save()
+    return redirect('diary_detail', pk=diary.pk)
+
+
+def comment_remove(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    diary = get_object_or_404(Diary, pk=comment.diary_id.pk)
+    if comment.author == request.user or request.user.is_staff:
+        comment.delete()
+    return redirect('diary_detail', pk=diary.pk)
+

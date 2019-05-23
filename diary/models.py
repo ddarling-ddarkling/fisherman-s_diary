@@ -35,6 +35,9 @@ class Diary(models.Model):
     def __str__(self):
         return self.name
 
+    def comments_amount(self):
+        return len(Comment.objects.filter(diary_id=self))
+
 
 class Comment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

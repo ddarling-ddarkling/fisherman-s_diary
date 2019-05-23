@@ -8,12 +8,16 @@
                     {{ diary.published_date }}</p>
             </div>
         {% endif %}
-        {% if user.is_authenticated and user == diary.author %}
-            <a class="btn btn-default" href="{% url 'diary_edit' pk=diary.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-        {% endif %}
-        {% if user.is_staff and user != diary.author %}
-            <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+        {% if diary.deleted == False %}
+            {% if user.is_authenticated and user == diary.author %}
+                <a class="btn btn-default" href="{% url 'diary_edit' pk=diary.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+            {% endif %}
+            {% if user.is_staff and user != diary.author %}
+                <a class="btn btn-default" href="{% url 'diary_remove' pk=diary.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+            {% endif %}
+        {% else %}
+            <a class="btn btn-default" href="{% url 'restore' pk=diary.pk %}">Восстановить</a>
         {% endif %}
         <h1>{{ diary.name }}</h1>
         <p><b>Дата рыбалки:</b> {{ diary.catch_date}}</p>
@@ -36,9 +40,26 @@
             <div>
                 <a href="{% url 'profile' pk=comment.author.pk %}">{{ comment.author }}</a>
                 <p>{{ comment.description }}</p>
-                {{ comment.published_date }}<hr>
+                {% if user.is_authenticated and user == comment.author or user.is_staff %}
+                    {{ comment.published_date }} <a href="{% url 'comment_remove' pk=comment.pk %}">Удалить</a> <hr>
+                {% endif %}
             </div>
         {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if comments.has_previous %}
+                    <a href="?page={{ comments.previous_page_number }}">предыдущая</a>
+                {% endif %}
+
+                <span class="current">
+                    Страница {{ comments.number }} из {{ comments.paginator.num_pages }}
+                </span>
+
+                {% if comments.has_next %}
+                    <a href="?page={{ comments.next_page_number }}">Следующая</a>
+                {% endif %}
+            </span>
+        </div>
         {% if user.is_authenticated %}
         {% if form %}
             <form method="POST" class="post-form">{% csrf_token %}
