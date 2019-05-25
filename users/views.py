@@ -102,5 +102,5 @@ def user_place(request, pk):
         header = "Мои места:"
     else:
         place_list = Place.objects.filter(author=profile_user).filter(visibility=all)
-        header = "Места пользователя:"
-    return render(request, 'registration/user_place.html', {'place_list': place_list, 'header': header})
+        header = "Места пользователя " + profile_user.username + " :"
+    return render(request, 'registration/user_place.html', {'place_list': place_list, 'header': header, 'profile_user': profile_user})

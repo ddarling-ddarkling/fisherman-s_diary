@@ -1,6 +1,5 @@
 from django import forms
-from .models import Diary
-from .models import Comment
+from .models import Diary, Comment, Place
 
 
 class DiaryForm(forms.ModelForm):
@@ -38,4 +37,24 @@ class CommentForm(forms.ModelForm):
         }
         labels = {
             'description': 'Текст комментария:',
+        }
+
+
+class PlaceForm(forms.ModelForm):
+
+    class Meta:
+        model = Place
+        fields = {
+            'name',
+            'visibility',
+            'latitude',
+            'longitude',
+            'description',
+        }
+        labels = {
+            'name': 'Название:',
+            'visibility': 'Кому видно место:',
+            'latitude': 'Широта:',
+            'longitude': 'Долгота:',
+            'description': 'Описание:',
         }

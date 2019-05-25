@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{header}}</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.non_field_errors }}
+        <div>
+            {{ form.name.errors }}
+            <label for="id_name">Название:</label>
+            {{ form.name }}
+        </div>
+        <div>
+            <br>
+            {{ form.visibility.errors }}
+            <label for="id_visibility">Кому видно:</label>
+            {{ form.visibility }}
+        </div>
+        <div>
+            {{ form.latitude.errors }}
+            <label for="id_latitude">Широта:</label>
+            {{ form.latitude }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.longitude.errors }}
+            <label for="id_lonitude">Долгота:</label>
+            {{ form.longitude }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.description.errors }}
+            <label for="id_description">Описание:</label>
+            {{ form.description }}
+        </div>
+        <br><button type="submit" class="save btn btn-default">Сохранить</button>
+    </form>
+{% endblock %}

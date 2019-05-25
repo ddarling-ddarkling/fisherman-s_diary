@@ -2,12 +2,23 @@
 
 {% block content %}
 
+    {% if user.is_authenticated and user == profile_user %}
+        <a href="{% url 'new_place' %}"><span class="glyphicon glyphicon-plus"></span></a>
+    {% endif %}
     <h1>{{ header }}</h1>
+
     {% if place_list %}
         {% for place in place_list %}
             <div class="post">
                 <h1>{{ place.name }}</a></h1>
+                <p>Координаты: {{place.latitude }}, {{ place.longitude }}</p>
                 <p>{{ place.description|linebreaksbr }}</p>
+                {% if user.is_authenticated and user == place.author %}
+                <p><a href="{% url 'place_edit' pk=place.pk %}">редактировать</a><a href="{% url 'place_remove' pk=place.pk %}"> удалить</a></p>
+                {% endif %}
+                {% if user.is_staff and user != place.author %}
+                    <p><a href="{% url 'place_remove' pk=place.pk %}"> удалить</a></p>
+                {% endif %}
             </div>
         {% endfor %}
     {% else %}
