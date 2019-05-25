@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
-from diary.models import Diary, Comment
+from diary.models import Diary, Comment, Place
 from users.forms import ProfileForm
 from users.models import Profile, Relationship
 
@@ -45,9 +45,11 @@ def profile(request, pk):
     if profile_user == request.user:
         diary_list = Diary.objects.filter(author=profile_user).order_by('-published_date')
         header = "Мои посты:"
+        places_header = "Мои места"
     else:
         diary_list = Diary.objects.filter(author=profile_user, deleted=False).order_by('-published_date')
         header = "Посты пользователя:"
+        places_header = "Места пользователя"
 
     return render(request, 'registration/profile.html', {'profile': user_profile,
                                                          'profile_user': profile_user,
@@ -55,7 +57,8 @@ def profile(request, pk):
                                                          'following_relationships': following_relationships,
                                                          'follow_sign': follow_sign,
                                                          'diary_list': diary_list,
-                                                         'header': header})
+                                                         'header': header,
+                                                         'places_header': places_header})
 
 
 def profile_edit(request, pk):
@@ -90,3 +93,14 @@ def unsubscribe(request, pk):
         relationship.delete()
 
     return redirect('profile', pk=following_user.pk)
+
+
+def user_place(request, pk):
+    profile_user = get_object_or_404(User, pk=pk)
+    if request.user == profile_user:
+        place_list = Place.objects.filter(author=profile_user)
+        header = "Мои места:"
+    else:
+        place_list = Place.objects.filter(author=profile_user).filter(visibility=all)
+        header = "Места пользователя:"
+    return render(request, 'registration/user_place.html', {'place_list': place_list, 'header': header})

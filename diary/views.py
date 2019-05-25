@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import redirect
 from django.utils import timezone
-from .models import Diary, Comment
+from .models import Diary, Comment, Place
 from django.shortcuts import render, get_object_or_404
 from .forms import DiaryForm, CommentForm
 
@@ -100,4 +100,6 @@ def comment_remove(request, pk):
     if comment.author == request.user or request.user.is_staff:
         comment.delete()
     return redirect('diary_detail', pk=diary.pk)
+
+
 

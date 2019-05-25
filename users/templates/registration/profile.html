@@ -20,6 +20,11 @@
             <p><b>День рождения:</b> {{ profile.birthday}}</p>
         {% endif %}
         {% if user.is_authenticated and user == profile.user %}
+            <p><a href="{% url 'user_place' pk=profile_user.pk %}">{{ places_header }}</a></p>
+        {% else %}
+            <p><a href="{% url 'user_place' pk=profile_user.pk %}">{{ places_header }}</a></p>
+        {% endif %}
+        {% if user.is_authenticated and user == profile.user %}
             <a class="btn btn-default" href="{% url 'profile_edit' pk=user.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
         {% endif %}
     </div>

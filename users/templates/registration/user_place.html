@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>{{ header }}</h1>
+    {% if place_list %}
+        {% for place in place_list %}
+            <div class="post">
+                <h1>{{ place.name }}</a></h1>
+                <p>{{ place.description|linebreaksbr }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Тут пока пусто.</p>
+    {% endif %}
+
+{% endblock %}
