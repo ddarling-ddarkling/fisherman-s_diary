@@ -44,10 +44,13 @@ def profile(request, pk):
 
     if profile_user == request.user or request.user.is_staff:
         diary_list = Diary.objects.filter(author=profile_user).order_by('-published_date')
+    else:
+        diary_list = Diary.objects.filter(author=profile_user, deleted=False).order_by('-published_date')
+
+    if profile_user == request.user:
         header = "Мои посты:"
         places_header = "Мои места"
     else:
-        diary_list = Diary.objects.filter(author=profile_user, deleted=False).order_by('-published_date')
         header = "Посты пользователя:"
         places_header = "Места пользователя"
 

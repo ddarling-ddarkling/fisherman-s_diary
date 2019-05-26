@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'diary',
     'users',
     'places',
+    'groups',
 ]
 
 MIDDLEWARE = [

@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('diary.urls')),
     path('', include('users.urls')),
     path('', include('places.urls')),
+    path('', include('groups.urls')),
 ]

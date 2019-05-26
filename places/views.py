@@ -46,7 +46,7 @@ def new_place(request):
             place = form.save(commit=False)
             place.author = request.user
             place.save()
-            return redirect('user_places', pk=place.author.pk)
+            return redirect('place_detail', pk=place.pk)
     else:
         form = PlaceForm()
     return render(request, 'edit.html', {'form': form, 'header': header})
@@ -63,7 +63,7 @@ def place_edit(request, pk):
         if form.is_valid():
             place = form.save(commit=False)
             place.save()
-            return redirect('user_places', pk=place.author.pk)
+            return redirect('place_detail', pk=place.pk)
     else:
         form = PlaceForm(instance=place)
     return render(request, 'edit.html', {'form': form, 'header': header})
