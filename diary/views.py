@@ -83,7 +83,7 @@ def diary_remove(request, pk):
     if diary.author == request.user or request.user.is_staff:
         diary.deleted = True
         diary.save()
-    return redirect('diary_page')
+    return redirect('diary_detail', pk=diary.pk)
 
 
 def restore(request, pk):

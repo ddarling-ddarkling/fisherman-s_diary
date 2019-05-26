@@ -74,7 +74,7 @@ def place_remove(request, pk):
     if place.author == request.user or request.user.is_staff:
         place.deleted = True
         place.save()
-    return redirect('user_places', pk=place.author.pk)
+    return redirect('place_detail', pk=place.pk)
 
 
 def place_restore(request, pk):

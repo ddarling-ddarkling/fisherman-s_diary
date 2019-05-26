@@ -42,7 +42,7 @@ def profile(request, pk):
         else:
             follow_sign = False
 
-    if profile_user == request.user:
+    if profile_user == request.user or request.user.is_staff:
         diary_list = Diary.objects.filter(author=profile_user).order_by('-published_date')
         header = "Мои посты:"
         places_header = "Мои места"
