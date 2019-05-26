@@ -21,6 +21,7 @@
         {% else %}
             <a href="{% url 'place_restore' pk=place.pk %}">Восстановить</a>
         {% endif %}
+        <h1>Записи, связанные с этим местом:</h1>
         {% for diary in diary_list %}
             <div>
                 <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a>&nbsp;

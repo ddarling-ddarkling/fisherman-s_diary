@@ -25,7 +25,7 @@
 
             {% for place in place_list %}
                 L.marker([{{ place.latitude|unlocalize }}, {{ place.longitude|unlocalize }}]).addTo(mymap)
-                .bindPopup('<a href="{% url 'place_detail' pk=place.pk %}">{{ place.name }}</a>').openPopup();
+                .bindPopup('<a href="{% url 'place_detail' pk=place.pk %}">{{ place.name }}</a>');
             {% endfor %}
 
         </script>

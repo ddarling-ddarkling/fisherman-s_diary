@@ -42,6 +42,7 @@ def diary_detail(request, pk):
         comments = paginator.page(1)
     except EmptyPage:
         comments = paginator.page(paginator.num_pages)
+
     return render(request, 'diary/diary_detail.html', {'diary': diary, 'comments': comments, 'form': form})
 
 
