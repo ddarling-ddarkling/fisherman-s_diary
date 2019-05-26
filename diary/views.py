@@ -1,9 +1,9 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import redirect
 from django.utils import timezone
-from .models import Diary, Comment, Place
+from .models import Diary, Comment
 from django.shortcuts import render, get_object_or_404
-from .forms import DiaryForm, CommentForm, PlaceForm
+from .forms import DiaryForm, CommentForm
 
 
 def diary_page(request):
@@ -100,43 +100,4 @@ def comment_remove(request, pk):
     if comment.author == request.user or request.user.is_staff:
         comment.delete()
     return redirect('diary_detail', pk=diary.pk)
-
-
-def new_place(request):
-    header = "Новое место"
-    if request.method == "POST":
-        form = PlaceForm(request.POST)
-        if form.is_valid():
-            place = form.save(commit=False)
-            place.author = request.user
-            place.save()
-            return redirect('user_place', pk=place.author.pk)
-    else:
-        form = PlaceForm()
-    return render(request, 'diary/place_edit.html', {'form': form, 'header': header})
-
-
-def place_edit(request, pk):
-    header = "Редактировать место"
-    place = get_object_or_404(Place, pk=pk)
-    if place.author != request.user:
-        return redirect('user_place', pk=place.author.pk)
-
-    if request.method == "POST":
-        form = PlaceForm(request.POST, instance=place)
-        if form.is_valid():
-            place = form.save(commit=False)
-            place.save()
-            return redirect('user_place', pk=place.author.pk)
-    else:
-        form = PlaceForm(instance=place)
-    return render(request, 'diary/place_edit.html', {'form': form, 'header': header})
-
-
-def place_remove(request, pk):
-    place = get_object_or_404(Place, pk=pk)
-    if place.author == request.user or request.user.is_staff:
-        place.delete()
-    return redirect('user_place', pk=place.author.pk)
-
 

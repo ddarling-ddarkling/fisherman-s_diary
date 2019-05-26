@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'diary',
     'users',
+    'places',
 ]
 
 MIDDLEWARE = [

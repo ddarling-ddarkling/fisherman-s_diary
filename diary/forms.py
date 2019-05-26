@@ -1,5 +1,5 @@
 from django import forms
-from .models import Diary, Comment, Place
+from .models import Diary, Comment
 
 
 class DiaryForm(forms.ModelForm):
@@ -11,6 +11,7 @@ class DiaryForm(forms.ModelForm):
             'catch_date',
             'fishing_time',
             'weather',
+            'place',
             'description',
             'feeding_type',
             'tackle_type',
@@ -21,6 +22,7 @@ class DiaryForm(forms.ModelForm):
             'catch_date': 'Дата рыбалки:',
             'fishing_time': 'Время суток:',
             'weather': 'Погода:',
+            'place': 'Место:',
             'description': 'Описание:',
             'feeding_type': 'Тип прикорма:',
             'tackle_type': 'Тип снасти:',
@@ -37,24 +39,4 @@ class CommentForm(forms.ModelForm):
         }
         labels = {
             'description': 'Текст комментария:',
-        }
-
-
-class PlaceForm(forms.ModelForm):
-
-    class Meta:
-        model = Place
-        fields = {
-            'name',
-            'visibility',
-            'latitude',
-            'longitude',
-            'description',
-        }
-        labels = {
-            'name': 'Название:',
-            'visibility': 'Кому видно место:',
-            'latitude': 'Широта:',
-            'longitude': 'Долгота:',
-            'description': 'Описание:',
         }

@@ -20,9 +20,9 @@
             <p><b>День рождения:</b> {{ profile.birthday}}</p>
         {% endif %}
         {% if user.is_authenticated and user == profile.user %}
-            <p><a href="{% url 'user_place' pk=profile_user.pk %}">{{ places_header }}</a></p>
+            <p><a href="{% url 'user_places' pk=profile_user.pk %}">{{ places_header }}</a></p>
         {% else %}
-            <p><a href="{% url 'user_place' pk=profile_user.pk %}">{{ places_header }}</a></p>
+            <p><a href="{% url 'user_places' pk=profile_user.pk %}">{{ places_header }}</a></p>
         {% endif %}
         {% if user.is_authenticated and user == profile.user %}
             <a class="btn btn-default" href="{% url 'profile_edit' pk=user.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -59,9 +59,9 @@
     <h1>{{ header }}</h1>
     {% for diary in diary_list %}
         <div>
-            <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a>&nbsp
-            {{ diary.published_date }}&nbsp
-            <a href="{% url 'diary_detail' pk=diary.pk %}#comments">{{ diary.comments_amount }}</a>&nbsp
+            <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a>&nbsp;
+            {{ diary.published_date }}&nbsp;
+            <a href="{% url 'diary_detail' pk=diary.pk %}#comments">{{ diary.comments_amount }}</a>&nbsp;
             <b>{% if diary.deleted == True %} Удалён {% endif %}</b>
         </div>
     {% endfor %}

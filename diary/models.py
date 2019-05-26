@@ -2,6 +2,9 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from places.models import Place
+
+
 class Diary(models.Model):
     WEATHER_CHOICES = [
         ('sun', 'ясно'),
@@ -18,8 +21,9 @@ class Diary(models.Model):
     ]
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=50)
-    published_date = models.DateField(blank=True, null=True)
+    published_date = models.DateTimeField(blank=True, null=True)
     catch_date = models.DateField(blank=True, null=True)
     description = models.TextField()
     feeding_type = models.CharField(max_length=30, blank=True, null=True)
@@ -51,16 +55,4 @@ class Comment(models.Model):
         self.save()
 
 
-class Place(models.Model):
-    VISIBILITY_CHOICES = [
-        ('me', 'Только мне'),
-        ('all', 'Всем'),
-    ]
-
-    name = models.CharField(max_length=30)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    visibility = models.CharField(max_length=3, choices=VISIBILITY_CHOICES, default='me')
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    description = models.TextField()
 

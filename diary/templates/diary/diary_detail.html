@@ -25,6 +25,9 @@
         {% endif %}
         <p><b>Время суток:</b> {{ diary.get_fishing_time_display }}</p>
         <p><b>Погода:</b> {{ diary.get_weather_display }}</p>
+        {% if diary.place and diary.place.deleted == False %}
+            <p><b>Место рыбалки: </b><a href="{% url 'place_detail' pk=diary.place.pk %}">{{ diary.place.name}}</a></p>
+        {% endif %}
         <p>{{ diary.description|linebreaksbr }}</p>
         {% if diary.feeding_type %}
             <p><b>Тип прикорма:</b> {{ diary.feeding_type}}</p>

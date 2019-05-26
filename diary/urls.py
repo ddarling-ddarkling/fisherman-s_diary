@@ -9,7 +9,4 @@ urlpatterns = [
     path('diary/<int:pk>/remove/', views.diary_remove, name='diary_remove'),
     path('diary/<int:pk>/restore/', views.restore, name='restore'),
     path('diary/comment_remove/<int:pk>/', views.comment_remove, name='comment_remove'),
-    path('diary/new_place/', views.new_place, name='new_place'),
-    path('diary/<int:pk>/place_edit/', views.place_edit, name='place_edit'),
-    path('diary/place_remove/<int:pk>/', views.place_remove, name='place_remove'),
 ]

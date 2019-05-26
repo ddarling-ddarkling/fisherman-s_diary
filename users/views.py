@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
-from diary.models import Diary, Comment, Place
+from diary.models import Diary, Comment
 from users.forms import ProfileForm
 from users.models import Profile, Relationship
 
@@ -93,14 +93,3 @@ def unsubscribe(request, pk):
         relationship.delete()
 
     return redirect('profile', pk=following_user.pk)
-
-
-def user_place(request, pk):
-    profile_user = get_object_or_404(User, pk=pk)
-    if request.user == profile_user:
-        place_list = Place.objects.filter(author=profile_user)
-        header = "Мои места:"
-    else:
-        place_list = Place.objects.filter(author=profile_user).filter(visibility=all)
-        header = "Места пользователя " + profile_user.username + " :"
-    return render(request, 'registration/user_place.html', {'place_list': place_list, 'header': header, 'profile_user': profile_user})
