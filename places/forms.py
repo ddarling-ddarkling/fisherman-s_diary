@@ -13,10 +13,3 @@ class PlaceForm(forms.ModelForm):
             'longitude',
             'description',
         }
-        labels = {
-            'name': 'Название:',
-            'visibility': 'Кому видно место:',
-            'latitude': 'Широта:',
-            'longitude': 'Долгота:',
-            'description': 'Описание:',
-        }

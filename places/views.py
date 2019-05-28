@@ -85,4 +85,16 @@ def place_restore(request, pk):
     return redirect('place_detail', pk=place.pk)
 
 
+def main_map(request):
+    if request.user.is_authenticated:
+        secret_place_list = Place.objects.filter(author=request.user, visibility="me", deleted=False)
+        another_place_list = Place.objects.filter(visibility="all", deleted=False)
+    else:
+        another_place_list = Place.objects.filter(visibility="all", deleted=False)
+        secret_place_list = ""
+
+    return render(request, 'map.html', {'secret_place_list': secret_place_list,
+                                        'another_place_list': another_place_list})
+
+
 

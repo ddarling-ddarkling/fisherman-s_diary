@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block scripts %}
 
@@ -9,5 +10,28 @@
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
        crossorigin=""></script>
+
+    <script>
+        var secret_place_Icon = L.icon({
+            iconUrl: "{% static 'icons/secret.png' %}",
+            iconSize:     [35, 35],
+            iconAnchor:   [18, 35],
+            popupAnchor:  [0, -36]
+        });
+
+        var my_place_Icon = L.icon({
+            iconUrl: "{% static 'icons/map-marker.png' %}",
+            iconSize:     [35, 35],
+            iconAnchor:   [18, 35],
+            popupAnchor:  [0, -36]
+        });
+
+        var another_place_Icon = L.icon({
+            iconUrl: "{% static 'icons/map-marker-icon.png' %}",
+            iconSize:     [35, 35],
+            iconAnchor:   [18, 35],
+            popupAnchor:  [0, -36]
+        });
+    </script>
 
 {% endblock %}

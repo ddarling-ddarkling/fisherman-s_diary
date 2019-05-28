@@ -9,4 +9,5 @@ urlpatterns = [
     path('places/<int:pk>/edit/', views.place_edit, name='place_edit'),
     path('places/remove/<int:pk>/', views.place_remove, name='place_remove'),
     path('places/<int:pk>/restore/', views.place_restore, name='place_restore'),
+    path('places/map/', views.main_map, name='main_map'),
 ]
