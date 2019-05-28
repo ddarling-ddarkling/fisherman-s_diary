@@ -21,15 +21,20 @@
         {% else %}
             <a href="{% url 'place_restore' pk=place.pk %}">Восстановить</a>
         {% endif %}
-        <h1>Записи, связанные с этим местом:</h1>
-        {% for diary in diary_list %}
-            <div>
-                <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a>&nbsp;
-                {{ diary.published_date }}&nbsp;
-                <a href="{% url 'diary_detail' pk=diary.pk %}#comments">{{ diary.comments_amount }}</a>&nbsp;
-                <b>{% if diary.deleted == True %} Удалён {% endif %}</b>
-            </div>
-        {% endfor %}
+
+        {% if diary_list %}
+            <h1>Записи, связанные с этим местом:</h1>
+            {% for diary in diary_list %}
+                <div>
+                    <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a>&nbsp;
+                    {{ diary.published_date }}&nbsp;
+                    <a href="{% url 'diary_detail' pk=diary.pk %}#comments">{{ diary.comments_amount }}</a>&nbsp;
+                    <b>{% if diary.deleted == True %} Удалён {% endif %}</b>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h1>С этим местом пока не связана ни одна запись.</h1>
+        {% endif %}
     </div>
 
     <div id="mapid" style="width: 600px; height: 400px;"></div>
