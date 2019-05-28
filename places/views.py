@@ -66,7 +66,7 @@ def place_edit(request, pk):
             return redirect('place_detail', pk=place.pk)
     else:
         form = PlaceForm(instance=place)
-    return render(request, 'edit.html', {'form': form, 'header': header})
+    return render(request, 'edit.html', {'form': form, 'header': header, 'place': place})
 
 
 def place_remove(request, pk):

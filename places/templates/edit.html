@@ -1,5 +1,6 @@
 {% extends 'base_with_map.html' %}
 {% load static %}
+{% load l10n %}
 
 {% block content %}
     <h1>{{header}}</h1>
@@ -63,15 +64,20 @@
             $("#id_longitude").val(position.lng).keyup();
         });
 
-        <!--запрос на разрешение отслеживания геопозици-->
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                marker.setLatLng([position.coords.latitude, position.coords.longitude]);
-                mymap.setView([position.coords.latitude, position.coords.longitude], 14);
-                $("#id_latitude").val(position.coords.latitude);
-                $("#id_longitude").val(position.coords.longitude);
-            }
-        );
+        {% if header == "Новое место" %}
+            <!--запрос на разрешение отслеживания геопозици-->
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    marker.setLatLng([position.coords.latitude, position.coords.longitude]);
+                    mymap.setView([position.coords.latitude, position.coords.longitude], 14);
+                    $("#id_latitude").val(position.coords.latitude);
+                    $("#id_longitude").val(position.coords.longitude);
+                }
+            );
+         {% else %}
+            marker.setLatLng([{{ place.latitude|unlocalize }}, {{place.longitude|unlocalize}}]);
+            mymap.setView([{{ place.latitude|unlocalize }}, {{place.longitude|unlocalize}}], 14);
+         {% endif %}
 
         mymap.addLayer(marker);
     </script>
