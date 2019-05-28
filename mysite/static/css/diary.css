@@ -56,10 +56,14 @@ body {
 
 #mapid { height: 180px; }
 
-html, body, #map {
-  margin: 0px;
+.example-container #MapLocation {
+  margin-bottom: 0.75em;
+}
+
+.example-container input {
   width: 100%;
-  height: 100%;
-  padding: 0px;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  border: 1px solid #569ae3;
 }
 
