@@ -1,4 +1,5 @@
 {% extends 'base_with_map.html' %}
+{% load static %}
 {% load l10n %}
 
 {% block content %}
@@ -65,8 +66,12 @@
 
     <div>
         {% if user.is_authenticated %}
-            {{ diary.likes_amount }}&nbsp;<a href="{% url 'liked_it' pk=diary.pk %}">Нравится</a>&nbsp;&nbsp;
-            {{ diary.dislikes_amount }}&nbsp;<a href="{% url 'disliked_it' pk=diary.pk %}">Не нравится</a>
+            <a name="likes" href="{% url 'liked_it' pk=diary.pk %}">
+                <img src="https://img.icons8.com/wired/32/000000/thumb-up.png" alt="Нравится">&nbsp;{{ diary.likes_amount }}&nbsp;
+            </a>&nbsp;&nbsp;
+            <a name="dislikes" href="{% url 'disliked_it' pk=diary.pk %}">
+                <img src="{% static '/icons/icons8.png' %}" alt="Не нравится">&nbsp;{{ diary.dislikes_amount }}
+            </a>
         {% else %}
             <p>Авторизуйтесь для того, чтобы поставить отметку.</p>
         {% endif %}
@@ -108,5 +113,9 @@
     {% else %}
         <p>Авторизуйтесь для того, чтобы оставить комментарий.</p>
     {% endif %}
+
+    <div>
+        <a href="https://icons8.com/icon/47847/палец-вверх">icons by Icons8</a>
+    </div>
 
 {% endblock %}
