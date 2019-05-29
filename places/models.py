@@ -22,7 +22,10 @@ class Place(models.Model):
         return self.name
 
     def average_rating(self):
-        return Rating.objects.filter(place_id=self).aggregate(Sum('rating')).get('rating__sum', 0) / (len(Rating.objects.filter(place_id=self)))
+        if Rating.objects.filter(place_id=self):
+            return Rating.objects.filter(place_id=self).aggregate(Sum('rating')).get('rating__sum', 0) / (len(Rating.objects.filter(place_id=self)))
+        else:
+            return 0
 
 
 class Rating(models.Model):
