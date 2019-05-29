@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from diary.models import Diary
 from places.forms import PlaceForm
-from places.models import Place
+from places.models import Place, Rating
 
 
 def places(request, pk):
@@ -40,15 +40,19 @@ def place_detail(request, pk):
 
 def new_place(request):
     header = "Новое место"
-    if request.method == "POST":
-        form = PlaceForm(request.POST)
-        if form.is_valid():
-            place = form.save(commit=False)
-            place.author = request.user
-            place.save()
-            return redirect('place_detail', pk=place.pk)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = PlaceForm(request.POST)
+            if form.is_valid():
+                place = form.save(commit=False)
+                place.author = request.user
+                place.save()
+                return redirect('place_detail', pk=place.pk)
+        else:
+            form = PlaceForm()
     else:
-        form = PlaceForm()
+        return HttpResponseForbidden()
+
     return render(request, 'edit.html', {'form': form, 'header': header})
 
 
@@ -56,7 +60,7 @@ def place_edit(request, pk):
     header = "Редактировать место"
     place = get_object_or_404(Place, pk=pk)
     if place.author != request.user:
-        return redirect('user_places', pk=place.author.pk)
+        return HttpResponseForbidden()
 
     if request.method == "POST":
         form = PlaceForm(request.POST, instance=place)
@@ -95,6 +99,23 @@ def main_map(request):
 
     return render(request, 'map.html', {'secret_place_list': secret_place_list,
                                         'another_place_list': another_place_list})
+
+
+def rate_place(request, pk, value):
+    place = get_object_or_404(Place, pk=pk)
+    rating = Rating.objects.filter(user_id=request.user, place_id_id=place.pk)
+
+    if request.user.is_authenticated:
+        if rating:
+            rating.delete()
+            rating, created = Rating.objects.get_or_create(user_id=request.user, place_id_id=place.pk, rating=value)
+            rating.save()
+        else:
+            rating, created = Rating.objects.get_or_create(user_id=request.user, place_id_id=place.pk, rating=value)
+            rating.save()
+    else:
+        return HttpResponseForbidden()
+    return redirect('place_detail', pk=place.pk)
 
 
 

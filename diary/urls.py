@@ -9,4 +9,6 @@ urlpatterns = [
     path('diary/<int:pk>/remove/', views.diary_remove, name='diary_remove'),
     path('diary/<int:pk>/restore/', views.restore, name='restore'),
     path('diary/comment_remove/<int:pk>/', views.comment_remove, name='comment_remove'),
+    path('diary/<int:pk>/liked_it/', views.liked_it, name='liked_it'),
+    path('diary/<int:pk>/disliked_it/', views.disliked_it, name='disliked_it'),
 ]

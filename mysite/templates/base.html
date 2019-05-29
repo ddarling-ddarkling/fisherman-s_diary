@@ -3,13 +3,14 @@
 <html>
     <head>
         <title>Fisherman's Diary</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="{% static 'css/diary.css' %}">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         {% block scripts %}
         {% endblock %}
     </head>
@@ -21,12 +22,12 @@
                 <p><a href="{% url 'profile' pk=user.pk %}"> {{ user.username }}</a>
                 | <a href="{% url 'main_map' %}"> Карта </a></p>
                 {% if user.is_staff %}
-                    <a href="{% url 'admin:index' %}">Админка</a>
+                    <a href="{% url 'admin:index' %}">Админка </a>
                 {% endif %}
-                <p><a href="{% url 'logout' %}">Выход</a></p>
+                |<a href="{% url 'logout' %}"> Выход</a>
             {% else %}
-                <a href="{% url 'login' %}">Вход</a>
-                <a href="{% url 'signup' %}">Регистрация</a>
+                <a href="{% url 'login' %}">Вход </a>|
+                <a href="{% url 'signup' %}"> Регистрация</a>
                 | <a href="{% url 'main_map' %}"> Карта </a>
             {% endif %}
             <h1><a href="/">Дневник рыбака</a></h1>
@@ -40,5 +41,6 @@
                 </div>
             </div>
         </div>
+
     </body>
 </html>

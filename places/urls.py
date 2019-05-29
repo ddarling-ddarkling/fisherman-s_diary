@@ -10,4 +10,5 @@ urlpatterns = [
     path('places/remove/<int:pk>/', views.place_remove, name='place_remove'),
     path('places/<int:pk>/restore/', views.place_restore, name='place_restore'),
     path('places/map/', views.main_map, name='main_map'),
+    path('places/detail/<int:pk>/rate/<int:value>', views.rate_place, name='rate_place'),
 ]

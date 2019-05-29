@@ -3,6 +3,53 @@
 {% block content %}
     <h1>{{header}}</h1>
     <form method="POST" class="post-form">{% csrf_token %}
+<!--        {{ form.non_field_errors }}-->
+<!--        <div>-->
+<!--            {{ form.name.errors }}-->
+<!--            <label for="id_name">Название:</label>-->
+<!--            {{ form.name }}-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <br>-->
+<!--            {{ form.catch_date.errors }}-->
+<!--            <label for="id_catch_date">Дата рыбалки:</label>-->
+<!--            {{ form.catch_date }}-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            {{ form.fishing_time.errors }}-->
+<!--            <label for="id_fishing_time">Время суток:</label>-->
+<!--            {{ form.fishing_time }}-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            {{ form.weather.errors }}-->
+<!--            <label for="id_weather">Погода:</label>-->
+<!--            {{ form.weather }}-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            {{ form.place.errors }}-->
+<!--            <label for="place_choices">Место:</label>-->
+<!--            {{ form.place }}-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            {{ form.description.errors }}-->
+<!--            <label for="id_description">Описание:</label>-->
+<!--            {{ form.description }}-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            {{ form.feeding_type.errors }}-->
+<!--            <label for="id_feeding_type">Тип прикорма:</label>-->
+<!--            {{ form.feeding_type }}-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            {{ form.tackle_type.errors }}-->
+<!--            <label for="id_tackle_type">Тип снасти:</label>-->
+<!--            {{ form.tackle_type }}-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            {{ form.catch_type.errors }}-->
+<!--            <label for="id_catch_type">Тип улова:</label>-->
+<!--            {{ form.catch_type }}-->
+<!--        </div>-->
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Сохранить</button>
     </form>

@@ -43,6 +43,12 @@ class Diary(models.Model):
     def comments_amount(self):
         return len(Comment.objects.filter(diary_id=self))
 
+    def likes_amount(self):
+        return len(Mark.objects.filter(diary_id=self, type="like"))
+
+    def dislikes_amount(self):
+        return len(Mark.objects.filter(diary_id=self, type="dislike"))
+
 
 class Comment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -53,6 +59,23 @@ class Comment(models.Model):
     def publish(self):
         self.published_date = timezone.now()
         self.save()
+
+
+class Mark(models.Model):
+    MARK_TYPE_CHOICES = [
+        ('like', 'нравится'),
+        ('dislike', 'не нравится'),
+        ('neutral', 'нейтральная'),
+    ]
+
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    diary_id = models.ForeignKey(Diary, on_delete=models.CASCADE)
+    type = models.CharField(max_length=12, choices=MARK_TYPE_CHOICES, default='neutral')
+
+    def __str__(self):
+        return self.type
+
+
 
 
 

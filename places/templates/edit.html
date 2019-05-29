@@ -38,7 +38,25 @@
     <div id="mapid" style="width: 600px; height: 400px;"></div>
     <script>
 
-        var mymap = L.map('mapid').setView([59.944027, 30.307717], 11);
+        {% if header == "Новое место" %}
+
+            var mymap = L.map('mapid').setView([59.944027, 30.307717], 11);
+            $("#id_latitude").val(59.944027);
+            $("#id_longitude").val(30.307717);
+            var marker = new L.marker([59.944027, 30.307717], {
+                draggable: 'true'
+             }).bindPopup("Перетащи меня в нужное место").openPopup();
+
+        {% else %}
+
+            var mymap = L.map('mapid').setView([{{ place.latitude|unlocalize }}, {{place.longitude|unlocalize}}], 11);
+            $("#id_latitude").val({{ place.latitude|unlocalize }});
+            $("#id_longitude").val({{place.longitude|unlocalize}});
+            var marker = new L.marker([{{ place.latitude|unlocalize }}, {{place.longitude|unlocalize}}], {
+                draggable: 'true'
+             }).bindPopup("Перетащи меня в нужное место").openPopup();
+
+        {% endif %}
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 18,
@@ -47,13 +65,6 @@
                 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox.streets'
         }).addTo(mymap);
-
-        $("#id_latitude").val(59.944027);
-        $("#id_longitude").val(30.307717);
-
-        var marker = new L.marker([59.944027, 30.307717], {
-            draggable: 'true'
-        }).bindPopup("Перетащи меня в нужное место").openPopup();
 
         marker.on('dragend', function(event) {
             var position = marker.getLatLng();

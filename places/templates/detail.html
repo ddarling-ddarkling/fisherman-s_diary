@@ -22,6 +22,18 @@
             <a href="{% url 'place_restore' pk=place.pk %}">Восстановить</a>
         {% endif %}
 
+        <div>
+            {% if user.is_authenticated %}
+                {{ place.average_rating }}&nbsp;&nbsp;<a href="{% url 'rate_place' pk=place.pk value=1 %}">1</a>
+                <a href="{% url 'rate_place' pk=place.pk value=2 %}">2</a>
+                <a href="{% url 'rate_place' pk=place.pk value=3 %}">3</a>
+                <a href="{% url 'rate_place' pk=place.pk value=4 %}">4</a>
+                <a href="{% url 'rate_place' pk=place.pk value=5 %}">5</a>
+            {% else %}
+                <p>Авторизуйтесь для того, чтобы поставить оценку.</p>
+            {% endif %}
+        </div>
+
         {% if diary_list %}
             <h1>Записи, связанные с этим местом:</h1>
             {% for diary in diary_list %}

@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Sum
+from django.utils import timezone
 
 
 class Place(models.Model):
@@ -18,3 +20,18 @@ class Place(models.Model):
 
     def __str__(self):
         return self.name
+
+    def average_rating(self):
+        return Rating.objects.filter(place_id=self).aggregate(Sum('rating')).get('rating__sum', 0) / (len(Rating.objects.filter(place_id=self)))
+
+
+class Rating(models.Model):
+    place_id = models.ForeignKey(Place, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    published_date = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.published_date = timezone.now()
+        self.save()
+

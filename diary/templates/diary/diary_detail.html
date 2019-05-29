@@ -60,42 +60,53 @@
                 <p>Место рыбалки: секретное место</p>
             {% endif %}
         {% endif %}
-
     </div>
-        <h1><a name="comments"></a>Комментарии:</h1>
-        {% for comment in comments %}
-            <br>
-            <div>
-                <a href="{% url 'profile' pk=comment.author.pk %}">{{ comment.author }}</a>
-                <p>{{ comment.description }}</p>
-                {% if user.is_authenticated and user == comment.author or user.is_staff %}
-                    {{ comment.published_date }} <a href="{% url 'comment_remove' pk=comment.pk %}">Удалить</a> <hr>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <div class="pagination">
-            <span class="step-links">
-                {% if comments.has_previous %}
-                    <a href="?page={{ comments.previous_page_number }}">предыдущая</a>
-                {% endif %}
 
-                <span class="current">
-                    Страница {{ comments.number }} из {{ comments.paginator.num_pages }}
-                </span>
 
-                {% if comments.has_next %}
-                    <a href="?page={{ comments.next_page_number }}">Следующая</a>
-                {% endif %}
-            </span>
-        </div>
+    <div>
         {% if user.is_authenticated %}
+            {{ diary.likes_amount }}&nbsp;<a href="{% url 'liked_it' pk=diary.pk %}">Нравится</a>&nbsp;&nbsp;
+            {{ diary.dislikes_amount }}&nbsp;<a href="{% url 'disliked_it' pk=diary.pk %}">Не нравится</a>
+        {% else %}
+            <p>Авторизуйтесь для того, чтобы поставить отметку.</p>
+        {% endif %}
+    </div>
+
+    <h1><a name="comments"></a>Комментарии:</h1>
+    {% for comment in comments %}
+        <br>
+        <div>
+            <a href="{% url 'profile' pk=comment.author.pk %}">{{ comment.author }}</a>
+            <p>{{ comment.description }}</p>
+            {% if user.is_authenticated and user == comment.author or user.is_staff %}
+                {{ comment.published_date }} <a href="{% url 'comment_remove' pk=comment.pk %}">Удалить</a> <hr>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if comments.has_previous %}
+                <a href="?page={{ comments.previous_page_number }}">предыдущая</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ comments.number }} из {{ comments.paginator.num_pages }}
+            </span>
+
+            {% if comments.has_next %}
+                <a href="?page={{ comments.next_page_number }}">Следующая</a>
+            {% endif %}
+        </span>
+    </div>
+    {% if user.is_authenticated %}
         {% if form %}
             <form method="POST" class="post-form">{% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="save btn btn-default">Сохранить</button>
             </form>
         {% endif %}
-        {% else %}
-            <p>Авторизуйтесь для того, чтобы оставить комментарий.</p>
+    {% else %}
+        <p>Авторизуйтесь для того, чтобы оставить комментарий.</p>
     {% endif %}
+
 {% endblock %}
