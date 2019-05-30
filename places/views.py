@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 
 from diary.models import Diary
 from places.forms import PlaceForm
@@ -109,9 +110,11 @@ def rate_place(request, pk, value):
         if rating:
             rating.delete()
             rating, created = Rating.objects.get_or_create(user_id=request.user, place_id_id=place.pk, rating=value)
+            rating.published_date = timezone.now()
             rating.save()
         else:
             rating, created = Rating.objects.get_or_create(user_id=request.user, place_id_id=place.pk, rating=value)
+            rating.published_date = timezone.now()
             rating.save()
     else:
         return HttpResponseForbidden()
