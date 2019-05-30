@@ -1,11 +1,12 @@
 {% extends 'base_with_map.html' %}
 {% load l10n %}
+{% load static %}
 
 {% block content %}
 
     <h1>Карта</h1>
 
-    {% if secret_place_list or another_place_list %}
+    {% if sorted_list %}
 
         <div id="mapid" style="width: 800px; height: 600px;"></div>
         <script>
@@ -41,7 +42,7 @@
 
             {% else %}
 
-                {% for place in another_place_list %}
+                {% for place in sorted_list %}
                     L.marker([{{ place.latitude|unlocalize }}, {{ place.longitude|unlocalize }}],{icon:another_place_Icon}).addTo(mymap)
                     .bindPopup('<a href="{% url 'place_detail' pk=place.pk %}">{{ place.name }}</a>');
                 {% endfor %}
@@ -52,33 +53,26 @@
 
         {% if user.is_authenticated %}
 
-            {% for place in secret_place_list %}
-                <div class="post">
-                    <div class="date">
-                        Автор места: <a href="{% url 'profile' pk=place.author.pk %}"> {{ place.author }}</a>
-                    </div>
-                    <h1>
-                        <a href="{% url 'place_detail' pk=place.pk %}">{{ place.name }} </a>(секретное)
-                    </h1>
-                    <p>{{ place.description|linebreaksbr|truncatewords:40  }}</p>
-                </div>
-            {% endfor %}
-
-            {% for place in another_place_list %}
+            {% for place in sorted_list %}
                 <div class="post">
                     <div class="date">
                         Автор места: <a href="{% url 'profile' pk=place.author.pk %}"> {{ place.author }}</a>
                     </div>
                     <h1>
                         <a href="{% url 'place_detail' pk=place.pk %}">{{ place.name }}</a>
+                        {% if request.user == place.author and place.visibility == "me" %}
+                            &nbsp;(секретное)
+                        {% endif %}
                     </h1>
-                    <p>{{ place.description|linebreaksbr|truncatewords:40  }}</p>
+                    <p>{{ place.description|linebreaksbr|truncatewords:20  }}</p>
+                    <a href="{% url 'place_detail' pk=place.pk %}#rating"><img src="https://img.icons8.com/color/24/000000/filled-star.png" alt="Рейтинг места:"></a>
+                    {{ place.average_rating }}
                 </div>
             {% endfor %}
 
         {% else %}
 
-            {% for place in another_place_list %}
+            {% for place in sorted_list %}
                 <div class="post">
                     <div class="date">
                         Автор места: <a href="{% url 'profile' pk=place.author.pk %}"> {{ place.author }}</a>
@@ -86,7 +80,9 @@
                     <h1>
                         <a href="{% url 'place_detail' pk=place.pk %}">{{ place.name }}</a>
                     </h1>
-                    <p>{{ place.description|linebreaksbr|truncatewords:40  }}</p>
+                    <p>{{ place.description|linebreaksbr|truncatewords:20  }}</p>
+                    <a href="{% url 'place_detail' pk=place.pk %}#rating"><img src="https://img.icons8.com/color/24/000000/filled-star.png" alt="Рейтинг места:"></a>
+                    {{ place.average_rating }}
                 </div>
             {% endfor %}
 

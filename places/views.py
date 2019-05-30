@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from itertools import chain
 
 from diary.models import Diary
 from places.forms import PlaceForm
@@ -94,12 +95,17 @@ def main_map(request):
     if request.user.is_authenticated:
         secret_place_list = Place.objects.filter(author=request.user, visibility="me", deleted=False)
         another_place_list = Place.objects.filter(visibility="all", deleted=False)
+        place_list = secret_place_list | another_place_list
+        sorted_list = sorted(place_list, key=lambda a: a.average_rating(), reverse=True)
     else:
-        another_place_list = Place.objects.filter(visibility="all", deleted=False)
         secret_place_list = ""
+        another_place_list = ""
+        place_list = Place.objects.filter(visibility="all", deleted=False)
+        sorted_list = sorted(place_list, key=lambda a: a.average_rating(), reverse=True)
 
     return render(request, 'map.html', {'secret_place_list': secret_place_list,
-                                        'another_place_list': another_place_list})
+                                        'another_place_list': another_place_list,
+                                        'sorted_list': sorted_list})
 
 
 def rate_place(request, pk, value):

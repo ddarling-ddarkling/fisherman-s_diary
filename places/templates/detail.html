@@ -7,8 +7,6 @@
             <p>Автор: <a href="{% url 'profile' pk=place.author.pk %}"> {{ place.author }}</a>
         </div>
         <h1><a href="{% url 'user_places' pk=profile_user.pk %}">{{ places_header }}/ </a>{{ place.name }}</h1>
-        <p>Координаты: {{place.latitude }}, {{ place.longitude }}</p>
-        <p>{{ place.description|linebreaksbr }}</p>
 
         {% if place.deleted == False %}
             {% if user.is_authenticated and user == place.author %}
@@ -22,16 +20,25 @@
             <a href="{% url 'place_restore' pk=place.pk %}">Восстановить</a>
         {% endif %}
 
-        <div>
+        <p>Координаты: {{place.latitude }}, {{ place.longitude }}</p>
+        <p>{{ place.description|linebreaksbr }}</p>
+
+        <div name="rating">
             {% if user.is_authenticated %}
-                {{ place.average_rating }}&nbsp;&nbsp;<a href="{% url 'rate_place' pk=place.pk value=1 %}">1</a>
-                <a href="{% url 'rate_place' pk=place.pk value=2 %}">2</a>
-                <a href="{% url 'rate_place' pk=place.pk value=3 %}">3</a>
-                <a href="{% url 'rate_place' pk=place.pk value=4 %}">4</a>
-                <a href="{% url 'rate_place' pk=place.pk value=5 %}">5</a>
+                <p>
+                    Оцените место:
+                    <a href="{% url 'rate_place' pk=place.pk value=1 %}">1</a>
+                    <a href="{% url 'rate_place' pk=place.pk value=2 %}">2</a>
+                    <a href="{% url 'rate_place' pk=place.pk value=3 %}">3</a>
+                    <a href="{% url 'rate_place' pk=place.pk value=4 %}">4</a>
+                    <a href="{% url 'rate_place' pk=place.pk value=5 %}">5</a>
+                </p>
             {% else %}
                 <p>Авторизуйтесь для того, чтобы поставить оценку.</p>
             {% endif %}
+            <p>
+                <img src="https://img.icons8.com/color/24/000000/filled-star.png" alt="Рейтинг места:">&nbsp;{{ place.average_rating }}
+            </p>
         </div>
 
         {% if diary_list %}
