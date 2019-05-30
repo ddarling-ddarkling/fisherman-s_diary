@@ -67,8 +67,8 @@
     <div>
         {% if user.is_authenticated %}
             <a name="likes" href="{% url 'liked_it' pk=diary.pk %}">
-                <img src="https://img.icons8.com/wired/32/000000/thumb-up.png" alt="Нравится">&nbsp;
-            </a>{{ diary.likes_amount }}&nbsp;&nbsp;&nbsp;
+                <img src="https://img.icons8.com/wired/32/000000/thumb-up.png" alt="Нравится">
+            </a>&nbsp;{{ diary.likes_amount }}&nbsp;&nbsp;&nbsp;
             <a name="dislikes" href="{% url 'disliked_it' pk=diary.pk %}">
                 <img src="{% static '/icons/icons8.png' %}" alt="Не нравится">
             </a>&nbsp;{{ diary.dislikes_amount }}
