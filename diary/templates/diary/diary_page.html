@@ -12,18 +12,12 @@
             <h1><a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a></h1>
             <p>{{ diary.description|linebreaksbr|truncatewords:80 }}</p>
             <p>
-                <a href="{% url 'diary_detail' pk=diary.pk %}#comments ">
-                    <img src="https://img.icons8.com/wired/32/000000/speech-bubble-with-dots.png">
-                </a>
-                    {{ diary.comments_amount }}&nbsp;&nbsp;
-                <a href="{% url 'diary_detail' pk=diary.pk %}#likes ">
-                    <img src="https://img.icons8.com/wired/32/000000/thumb-up.png" alt="Нравится">
-                </a>
-                    {{ diary.likes_amount }}&nbsp;&nbsp;
-                <a href="{% url 'diary_detail' pk=diary.pk %}#dislikes ">
-                     <img src="{% static '/icons/icons8.png' %}" alt="Не нравится">
-                </a>
-                    {{ diary.dislikes_amount }}
+                <a href="{% url 'diary_detail' pk=diary.pk %}#comments "><img src="https://img.icons8.com/wired/32/000000/speech-bubble-with-dots.png"></a>
+                {{ diary.comments_amount }}&nbsp;&nbsp;
+                <a href="{% url 'diary_detail' pk=diary.pk %}#likes "><img src="https://img.icons8.com/wired/32/000000/thumb-up.png" alt="Нравится"></a>
+                {{ diary.likes_amount }}&nbsp;&nbsp;
+                <a href="{% url 'diary_detail' pk=diary.pk %}#dislikes "><img src="{% static '/icons/icons8.png' %}" alt="Не нравится"></a>
+                {{ diary.dislikes_amount }}
             </p>
         </div>
     {% endfor %}
