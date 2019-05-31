@@ -1,6 +1,6 @@
 {% extends 'base_with_map.html' %}
-{% load l10n %}
 {% load static %}
+{% load l10n %}
 
 {% block content %}
 
@@ -65,8 +65,34 @@
                         {% endif %}
                     </h1>
                     <p>{{ place.description|linebreaksbr|truncatewords:20  }}</p>
-                    <a href="{% url 'place_detail' pk=place.pk %}#rating"><img src="https://img.icons8.com/color/24/000000/filled-star.png" alt="Рейтинг места:"></a>
-                    {{ place.average_rating }}
+                    <p>
+                        {% if 1 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 2 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 3 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 4 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 5 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {{ place.average_rating }}
+                    </p>
                 </div>
             {% endfor %}
 
@@ -81,8 +107,34 @@
                         <a href="{% url 'place_detail' pk=place.pk %}">{{ place.name }}</a>
                     </h1>
                     <p>{{ place.description|linebreaksbr|truncatewords:20  }}</p>
-                    <a href="{% url 'place_detail' pk=place.pk %}#rating"><img src="https://img.icons8.com/color/24/000000/filled-star.png" alt="Рейтинг места:"></a>
-                    {{ place.average_rating }}
+                    <p>
+                        {% if 1 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 2 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 3 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 4 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 5 <= place.average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {{ place.average_rating }}
+                    </p>
                 </div>
             {% endfor %}
 

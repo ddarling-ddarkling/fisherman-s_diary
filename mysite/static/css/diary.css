@@ -54,7 +54,9 @@ body {
     padding-left: 15px;
 }
 
-#mapid { height: 180px; }
+.content #mapid {
+    height: 180px;
+ }
 
 
 

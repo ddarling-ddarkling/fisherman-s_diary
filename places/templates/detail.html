@@ -1,7 +1,58 @@
 {% extends 'base_with_map.html' %}
+{% load static %}
 {% load l10n %}
 
 {% block content %}
+    <script>
+        function stars(star_hover){
+            var starList = ["star1", "star2", "star3", "star4", "star5"];
+
+            starList.forEach(function(item, i, arr) {
+                if( i <= star_hover){
+                    document.getElementById(item).classList.remove('fa-star-o');
+                    document.getElementById(item).classList.remove('fa');
+                    document.getElementById(item).classList.add('fa');
+                    document.getElementById(item).classList.add('fa-star');
+                }
+                else{
+                    document.getElementById(item).classList.remove('fa-star');
+                    document.getElementById(item).classList.remove('fa');
+                    document.getElementById(item).classList.add('fa');
+                    document.getElementById(item).classList.add('fa-star-o');
+                }
+            });
+        };
+        function fill_stars(avg_rating){
+            var starList = ["star1", "star2", "star3", "star4", "star5"];
+
+            starList.forEach(function(item, i, arr) {
+                if( i+1 <= Math.round(avg_rating)){
+                    document.getElementById(item).classList.remove('fa-star-o');
+                    document.getElementById(item).classList.add('fa-star');
+                }
+                else{
+                    document.getElementById(item).classList.remove('fa-star');
+                    document.getElementById(item).classList.add('fa-star-o');
+                }
+            });
+        };
+
+        function fill_stars_for_anonymous(avg_rating){
+            var starList = ["rating1", "rating2", "rating3", "rating4", "rating5"];
+
+            starList.forEach(function(item, i, arr) {
+                if( i+1 <= Math.round(avg_rating)){
+                    document.getElementById(item).classList.remove('fa-star-o');
+                    document.getElementById(item).classList.add('fa-star');
+                }
+                else{
+                    document.getElementById(item).classList.remove('fa-star');
+                    document.getElementById(item).classList.add('fa-star-o');
+                }
+            });
+        };
+    </script>
+
     <div class="post">
         <div class="date">
             <p>Автор: <a href="{% url 'profile' pk=place.author.pk %}"> {{ place.author }}</a>
@@ -23,22 +74,35 @@
         <p>Координаты: {{place.latitude }}, {{ place.longitude }}</p>
         <p>{{ place.description|linebreaksbr }}</p>
 
-        <div name="rating">
+        <div>
             {% if user.is_authenticated %}
                 <p>
+                    {% if rating %}
+                        Моя оценка: {{ rating.rating }}
+                    {% else %}
+                        Вы ещё не оценивали это место
+                    {% endif %}
+                </p>
+                <p>
                     Оцените место:
-                    <a href="{% url 'rate_place' pk=place.pk value=1 %}">1</a>
-                    <a href="{% url 'rate_place' pk=place.pk value=2 %}">2</a>
-                    <a href="{% url 'rate_place' pk=place.pk value=3 %}">3</a>
-                    <a href="{% url 'rate_place' pk=place.pk value=4 %}">4</a>
-                    <a href="{% url 'rate_place' pk=place.pk value=5 %}">5</a>
+                    <a onmouseover="stars(0)" href="{% url 'rate_place' pk=place.pk value=1 %}"><i id="star1" class="fa fa-star-o" ></i></a>
+                    <a onmouseover="stars(1)" href="{% url 'rate_place' pk=place.pk value=2 %}"><i id="star2" class="fa fa-star-o"></i></a>
+                    <a onmouseover="stars(2)" href="{% url 'rate_place' pk=place.pk value=3 %}"><i id="star3" class="fa fa-star-o"></i></a>
+                    <a onmouseover="stars(3)" href="{% url 'rate_place' pk=place.pk value=4 %}"><i id="star4" class="fa fa-star-o"></i></a>
+                    <a onmouseover="stars(4)" href="{% url 'rate_place' pk=place.pk value=5 %}"><i id="star5" class="fa fa-star-o"></i></a>
+                    {{ place.average_rating }}
                 </p>
             {% else %}
+                <p>
+                    <i id="rating1" class="fa fa-star-o" ></i></a>
+                    <i id="rating2" class="fa fa-star-o"></i></a>
+                    <i id="rating3" class="fa fa-star-o"></i></a>
+                    <i id="rating4" class="fa fa-star-o"></i></a>
+                    <i id="rating5" class="fa fa-star-o"></i></a>
+                    {{ place.average_rating }}
+                </p>
                 <p>Авторизуйтесь для того, чтобы поставить оценку.</p>
             {% endif %}
-            <p>
-                <img src="https://img.icons8.com/color/24/000000/filled-star.png" alt="Рейтинг места:">&nbsp;{{ place.average_rating }}
-            </p>
         </div>
 
         {% if diary_list %}
@@ -73,6 +137,13 @@
         .bindPopup("{{ place.name }}").openPopup();
 
 
+    </script>
+    <script type="text/javascript">
+        {% if user.is_authenticated %}
+            fill_stars({{ place.average_rating|unlocalize }});
+        {% else %}
+            fill_stars_for_anonymous({{ place.average_rating|unlocalize }});
+        {% endif %}
     </script>
 
 {% endblock %}

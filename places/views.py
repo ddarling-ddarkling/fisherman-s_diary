@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
@@ -23,6 +24,15 @@ def places(request, pk):
 def place_detail(request, pk):
     place = get_object_or_404(Place, pk=pk)
     profile_user = get_object_or_404(User, pk=place.author.pk)
+
+    if request.user.is_authenticated:
+        try:
+            rating = Rating.objects.get(user_id=request.user, place_id_id=place.pk)
+        except ObjectDoesNotExist:
+            rating = None
+    else:
+        rating = None
+
     if request.user != profile_user and place.visibility == "me":
         return HttpResponseForbidden()
 
@@ -37,7 +47,7 @@ def place_detail(request, pk):
         places_header = "Места пользователя " + profile_user.username
 
     return render(request, 'detail.html', {'place': place, 'diary_list': diary_list, 'profile_user': profile_user,
-                                           'places_header': places_header})
+                                           'places_header': places_header, 'rating': rating})
 
 
 def new_place(request):
