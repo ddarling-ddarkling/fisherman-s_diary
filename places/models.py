@@ -1,3 +1,5 @@
+import math
+
 from django.conf import settings
 from django.db import models
 from django.db.models import Sum
@@ -23,7 +25,14 @@ class Place(models.Model):
 
     def average_rating(self):
         if Rating.objects.filter(place_id=self):
-            return Rating.objects.filter(place_id=self).aggregate(Sum('rating')).get('rating__sum', 0) / (len(Rating.objects.filter(place_id=self)))
+            return round(Rating.objects.filter(place_id=self).aggregate(Sum('rating')).get('rating__sum', 0) / (len(Rating.objects.filter(place_id=self))), 1)
+        else:
+            return 0
+
+    def rounded_average_rating(self):
+        if Rating.objects.filter(place_id=self):
+            avg_rate = Rating.objects.filter(place_id=self).aggregate(Sum('rating')).get('rating__sum', 0) / (len(Rating.objects.filter(place_id=self)))
+            return math.ceil(avg_rate)
         else:
             return 0
 
