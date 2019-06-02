@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
@@ -26,6 +27,14 @@ def diary_detail(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
     comment_list = Comment.objects.filter(diary_id=diary.pk).order_by('-published_date')
 
+    if request.user.is_authenticated:
+        try:
+            user_mark = Mark.objects.get(user_id=request.user, diary_id_id=diary.pk)
+        except ObjectDoesNotExist:
+            user_mark = None
+    else:
+        user_mark = None
+
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -47,7 +56,8 @@ def diary_detail(request, pk):
     except EmptyPage:
         comments = paginator.page(paginator.num_pages)
 
-    return render(request, 'diary/diary_detail.html', {'diary': diary, 'comments': comments, 'form': form})
+    return render(request, 'diary/diary_detail.html', {'diary': diary, 'comments': comments,
+                                                       'form': form, 'user_mark': user_mark})
 
 
 def diary_new(request):
@@ -119,14 +129,14 @@ def comment_remove(request, pk):
 
 def liked_it(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
-    like = Mark.objects.filter(user_id=request.user, diary_id_id=diary.pk, type="like")
+    like = Mark.objects.filter(user_id=request.user, diary_id_id=diary.pk, mark="like")
 
     if request.user.is_authenticated:
         if like:
             like.delete()
         else:
             like, created = Mark.objects.get_or_create(user_id=request.user, diary_id_id=diary.pk)
-            like.type = "like"
+            like.mark = "like"
             like.save()
     else:
         return HttpResponseForbidden()
@@ -135,14 +145,14 @@ def liked_it(request, pk):
 
 def disliked_it(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
-    dislike = Mark.objects.filter(user_id=request.user, diary_id_id=diary.pk, type="dislike")
+    dislike = Mark.objects.filter(user_id=request.user, diary_id_id=diary.pk, mark="dislike")
 
     if request.user.is_authenticated:
         if dislike:
             dislike.delete()
         else:
             dislike, created = Mark.objects.get_or_create(user_id=request.user, diary_id_id=diary.pk)
-            dislike.type = "dislike"
+            dislike.mark = "dislike"
             dislike.save()
     else:
         return HttpResponseForbidden()
