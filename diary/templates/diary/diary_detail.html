@@ -75,9 +75,9 @@
             &nbsp;{{ diary.likes_amount }}&nbsp;&nbsp;&nbsp;
             <a name="dislikes" href="{% url 'disliked_it' pk=diary.pk %}">
                 {% if user_mark.mark == "like" or user_mark.mark == None %}
-                    <i class="fa fa-thumbs-o-down fa-2x"></i></a>
+                    <i class="fa fa-thumbs-o-down fa-flip-horizontal fa-2x"></i></a>
                 {% else %}
-                    <i class="fa fa-thumbs-down fa-2x"></i></a>
+                    <i class="fa fa-thumbs-down fa-flip-horizontal fa-2x"></i></a>
                 {% endif %}
             &nbsp;{{ diary.dislikes_amount }}
         {% else %}
