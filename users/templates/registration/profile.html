@@ -59,10 +59,15 @@
     <h1>{{ header }}</h1>
     {% for diary in diary_list %}
         <div>
-            <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a>&nbsp;
+            <a href="{% url 'diary_detail' pk=diary.pk %}">{{ diary.name }}</a><br>
             {{ diary.published_date }}&nbsp;
-            <a href="{% url 'diary_detail' pk=diary.pk %}#comments">{{ diary.comments_amount }}</a>&nbsp;
-            <b>{% if diary.deleted == True %} Удалён {% endif %}</b>
+            <a href="{% url 'diary_detail' pk=diary.pk %}#comments"><i class="fa fa-comment-o"></i></a>
+            {{ diary.comments_amount }}&nbsp;
+            <i class="fa fa-thumbs-o-up"></i>
+            {{ diary.likes_amount }}&nbsp;
+            <i class="fa fa-thumbs-o-down fa-flip-horizontal"></i>
+            {{ diary.dislikes_amount }}&nbsp;
+            <b>{% if diary.deleted == True %} Удалён {% endif %}</b><br><br>
         </div>
     {% endfor %}
 {% endblock %}

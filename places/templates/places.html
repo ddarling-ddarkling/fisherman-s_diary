@@ -38,6 +38,34 @@
                     {% endif %}
                 </h1>
                 <p>{{ place.description|linebreaksbr|truncatewords:40  }}</p>
+                <p>
+                        {% if 1 <= place.rounded_average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 2 <= place.rounded_average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 3 <= place.rounded_average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 4 <= place.rounded_average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if 5 <= place.rounded_average_rating %}
+                            <i class="fa fa-star"></i>
+                        {% else %}
+                            <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {{ place.average_rating }}
+                    </p>
             </div>
         {% endfor %}
     {% else %}
