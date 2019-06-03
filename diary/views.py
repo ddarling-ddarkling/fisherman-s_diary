@@ -11,8 +11,8 @@ from .forms import DiaryForm, CommentForm
 
 
 def diary_page(request):
-    diary_list = Diary.objects.filter(deleted__lte=False).filter(published_date__lte=timezone.now()).order_by('-published_date')
-    paginator = Paginator(diary_list, 4)
+    diary_list = Diary.objects.filter(deleted=False).filter(published_date__lte=timezone.now()).order_by('-published_date')
+    paginator = Paginator(diary_list, 8)
     page = request.GET.get('page')
     try:
         diaries = paginator.page(page)

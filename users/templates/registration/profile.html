@@ -67,7 +67,7 @@
             {{ diary.likes_amount }}&nbsp;
             <i class="fa fa-thumbs-o-down fa-flip-horizontal"></i>
             {{ diary.dislikes_amount }}&nbsp;
-            <b>{% if diary.deleted == True %} Удалён {% endif %}</b><br><br>
+            <b>{% if diary.deleted == True %}<i class="fa fa-trash-o"></i>{% endif %}</b><br><br>
         </div>
     {% endfor %}
 {% endblock %}
