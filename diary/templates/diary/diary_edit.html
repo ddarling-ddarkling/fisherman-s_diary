@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>{{header}}</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
+    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
 <!--        {{ form.non_field_errors }}-->
 <!--        <div>-->
 <!--            {{ form.name.errors }}-->
@@ -50,7 +50,11 @@
 <!--            <label for="id_catch_type">Тип улова:</label>-->
 <!--            {{ form.catch_type }}-->
 <!--        </div>-->
-        {{ form.as_p }}
+        {{ diary_form.as_p }}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form }}
+        {% endfor %}
         <button type="submit" class="save btn btn-default">Сохранить</button>
     </form>
 {% endblock %}

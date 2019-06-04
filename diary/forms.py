@@ -1,5 +1,5 @@
 from django import forms
-from .models import Diary, Comment
+from .models import Diary, Comment, Image
 
 
 class DiaryForm(forms.ModelForm):
@@ -34,9 +34,13 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = {
-            'description',
-        }
-        labels = {
-            'description': 'Текст комментария:',
-        }
+        fields = {'description'}
+        labels = {'description': 'Текст комментария:'}
+
+
+class ImageForm(forms.ModelForm):
+
+    class Meta:
+        model = Image
+        fields = {'image'}
+        labels = {'image': 'Изображение:'}

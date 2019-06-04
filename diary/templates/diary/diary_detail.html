@@ -38,6 +38,10 @@
         {% endif %}
         <p>{{ diary.description|linebreaksbr }}</p>
 
+        {% for image in image_list %}
+            <a href="{% url 'image_view' pk=image.pk %}"><img src="{{ MEDIA_URL }}{{ image.image.url }}" width="200px"></a>
+        {% endfor %}
+
         {% if diary.place and diary.place.deleted == False %}
             {% if request.user == diary.author and diary.place.visibility == "me" or diary.place.visibility == "all" %}
                 <div id="mapid" style="width: 600px; height: 400px;"></div>

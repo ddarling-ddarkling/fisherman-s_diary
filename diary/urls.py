@@ -11,4 +11,5 @@ urlpatterns = [
     path('diary/comment_remove/<int:pk>/', views.comment_remove, name='comment_remove'),
     path('diary/<int:pk>/liked_it/', views.liked_it, name='liked_it'),
     path('diary/<int:pk>/disliked_it/', views.disliked_it, name='disliked_it'),
+    path('diary/image/<int:pk>/', views.image_view, name='image_view'),
 ]

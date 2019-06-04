@@ -1,8 +1,10 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
+from django.utils import timezone
 
 from diary.models import Diary, Comment
 from users.forms import ProfileForm
@@ -28,6 +30,7 @@ def profile(request, pk):
     profile_user = get_object_or_404(User, pk=pk)
     follower_relationships = Relationship.objects.filter(following=profile_user)
     following_relationships = Relationship.objects.filter(follower=profile_user)
+
     if profile_user:
         user_profile, created = Profile.objects.get_or_create(user=profile_user)
     else:
@@ -71,7 +74,7 @@ def profile_edit(request, pk):
         return redirect('profile', pk=user.pk)
 
     if request.method == "POST":
-        form = ProfileForm(request.POST, instance=user_profile)
+        form = ProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             user_profile = form.save(commit=False)
             user_profile.save()
@@ -96,3 +99,28 @@ def unsubscribe(request, pk):
         relationship.delete()
 
     return redirect('profile', pk=following_user.pk)
+
+
+def subscription_feed(request):
+    if request.user.is_authenticated:
+        relationship_list = Relationship.objects.filter(follower=request.user)
+        following_list = []
+        for relation in relationship_list:
+            following_list.append(relation.following.id)
+
+        diary_list = Diary.objects.filter(deleted=False,
+                                          published_date__lte=timezone.now(),
+                                          author__in=following_list).order_by('-published_date')
+
+        paginator = Paginator(diary_list, 8)
+        page = request.GET.get('page')
+        try:
+            diaries = paginator.page(page)
+        except PageNotAnInteger:
+            diaries = paginator.page(1)
+        except EmptyPage:
+            diaries = paginator.page(paginator.num_pages)
+    else:
+        return HttpResponseForbidden()
+
+    return render(request, 'registration/feed.html', {'diaries': diaries})

@@ -3,11 +3,12 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.forms import modelformset_factory
 
 from places.models import Place
-from .models import Diary, Comment, Mark
+from .models import Diary, Comment, Mark, Image
 from django.shortcuts import render, get_object_or_404
-from .forms import DiaryForm, CommentForm
+from .forms import DiaryForm, CommentForm, ImageForm
 
 
 def diary_page(request):
@@ -25,7 +26,8 @@ def diary_page(request):
 
 def diary_detail(request, pk):
     diary = get_object_or_404(Diary, pk=pk)
-    comment_list = Comment.objects.filter(diary_id=diary.pk).order_by('-published_date')
+    image_list = Image.objects.filter(diary_id=diary)
+    comment_list = Comment.objects.filter(diary_id=diary).order_by('-published_date')
 
     if request.user.is_authenticated:
         try:
@@ -57,7 +59,8 @@ def diary_detail(request, pk):
         comments = paginator.page(paginator.num_pages)
 
     return render(request, 'diary/diary_detail.html', {'diary': diary, 'comments': comments,
-                                                       'form': form, 'user_mark': user_mark})
+                                                       'form': form, 'user_mark': user_mark,
+                                                       'image_list': image_list})
 
 
 def diary_new(request):
@@ -87,20 +90,38 @@ def diary_new(request):
 def diary_edit(request, pk):
     header = "Редактировать запись"
     diary = get_object_or_404(Diary, pk=pk)
+    try:
+        images = Image.objects.filter(diary_id=diary)
+    except ObjectDoesNotExist:
+        images = Image.objects.none()
 
     if diary.author != request.user:
         return HttpResponseForbidden()
 
+    ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=3-len(images))
     if request.method == "POST":
-        form = DiaryForm(request.POST, instance=diary)
-        if form.is_valid():
-            diary = form.save(commit=False)
+        diary_form = DiaryForm(request.POST, instance=diary, prefix="diary_form")
+        formset = ImageFormSet(request.POST, request.FILES, queryset=images)
+        if diary_form.is_valid() and formset.is_valid():
+            diary = diary_form.save(commit=False)
             diary.published_date = timezone.now()
             diary.save()
+            for form in formset:
+                if 'image' in form.cleaned_data and form.cleaned_data['image']:
+                    image = form.save(commit=False)
+                    image.diary_id = diary
+                    image.save()
+                elif 'image' in form.cleaned_data and not form.cleaned_data['image']:
+                    form.cleaned_data['id'].delete()
+
             return redirect('diary_detail', pk=diary.pk)
     else:
-        form = DiaryForm(instance=diary)
-    return render(request, 'diary/diary_edit.html', {'form': form, 'header': header})
+        diary_form = DiaryForm(instance=diary, prefix="diary_form")
+        formset = ImageFormSet(queryset=images)
+
+    return render(request, 'diary/diary_edit.html', {'diary_form': diary_form,
+                                                     'formset': formset,
+                                                     'header': header})
 
 
 def diary_remove(request, pk):
@@ -158,6 +179,10 @@ def disliked_it(request, pk):
         return HttpResponseForbidden()
     return redirect('diary_detail', pk=diary.pk)
 
+
+def image_view(request, pk):
+    image = get_object_or_404(Image, pk=pk)
+    return render(request, 'diary/image.html', {'image': image})
 
 
 

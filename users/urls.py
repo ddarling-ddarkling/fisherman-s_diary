@@ -9,4 +9,5 @@ urlpatterns = [
     path('accounts/<int:pk>/edit/', views.profile_edit, name='profile_edit'),
     path('accounts/profile/subscribe/<int:pk>', views.subscribe, name='subscribe'),
     path('accounts/profile/unsubscribe/<int:pk>', views.unsubscribe, name='unsubscribe'),
+    path('accounts/feed', views.subscription_feed, name='subscription_feed'),
 ]

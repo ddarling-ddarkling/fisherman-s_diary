@@ -20,8 +20,11 @@
         <div class="page-header col-md-12 col-12 col-sm-12">
             {% if user.is_authenticated %}
                 <a href="{% url 'diary_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
-                <p><a href="{% url 'profile' pk=user.pk %}"> {{ user.username }}</a>
-                | <a href="{% url 'main_map' %}"> Карта </a></p>
+                <p>
+                    <a href="{% url 'profile' pk=user.pk %}">{{ user.username }}</a>
+                    | <a href="{% url 'main_map' %}"> Карта </a>
+                    | <a href="{% url 'subscription_feed' %}"> Мои подписки </a>
+                </p>
                 {% if user.is_staff %}
                     <a href="{% url 'admin:index' %}">Админка </a>|
                 {% endif %}

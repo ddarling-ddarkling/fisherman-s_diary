@@ -76,6 +76,11 @@ class Mark(models.Model):
         return self.mark
 
 
+class Image(models.Model):
+    diary_id = models.ForeignKey(Diary, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="post_images/", blank=True)
+
+
 
 
 

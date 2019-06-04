@@ -3,6 +3,11 @@
 {% block content %}
     <div class="post">
         <h1>Профиль пользователя <b>{{ profile_user.username }}</b></h1>
+
+        {% if profile.user_photo %}
+            <img src="{{ MEDIA_URL }}{{ profile.user_photo.url }}" width="200px">
+        {% endif %}
+
         {% if user.is_authenticated and user != profile.user %}
             {% if follow_sign == True %}
                 <p><a class="btn btn-default" href="{% url 'unsubscribe' pk=profile_user.pk %}">Отписаться</a></p>
