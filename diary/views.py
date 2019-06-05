@@ -67,24 +67,37 @@ def diary_new(request):
     header = "Новая запись"
 
     if request.user.is_authenticated:
-        place_choices = Place.objects.filter(visibility="me", deleted=False, author=request.user)
-        free_place_choices = Place.objects.filter(visibility="all", deleted=False)
+        # place_choices = Place.objects.filter(visibility="me", deleted=False, author=request.user)
+        # free_place_choices = Place.objects.filter(visibility="all", deleted=False)
+
+        ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=3)
 
         if request.method == "POST":
-            form = DiaryForm(request.POST)
-            if form.is_valid():
-                diary = form.save(commit=False)
+            diary_form = DiaryForm(request.POST)
+            formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
+            if diary_form.is_valid() and formset.is_valid():
+                diary = diary_form.save(commit=False)
                 diary.published_date = timezone.now()
                 diary.author = request.user
                 diary.save()
+                for form in formset:
+                    if 'image' in form.cleaned_data and form.cleaned_data['image']:
+                        image = form.save(commit=False)
+                        image.diary_id = diary
+                        image.save()
+                    elif 'image' in form.cleaned_data and not form.cleaned_data['image']:
+                        form.cleaned_data['id'].delete()
+
                 return redirect('diary_detail', pk=diary.pk)
         else:
-            form = DiaryForm()
+            diary_form = DiaryForm()
+            formset = ImageFormSet(queryset=Image.objects.none())
     else:
         return HttpResponseForbidden()
 
-    return render(request, 'diary/diary_edit.html', {'form': form, 'header': header, 'place_choices': place_choices,
-                                                     'free_place_choices': free_place_choices})
+    return render(request, 'diary/diary_edit.html', {'diary_form': diary_form,
+                                                     'formset': formset,
+                                                     'header': header})
 
 
 def diary_edit(request, pk):
